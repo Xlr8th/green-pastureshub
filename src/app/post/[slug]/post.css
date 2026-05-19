@@ -1,0 +1,152 @@
+.page-post {
+    background: var(--bg-primary);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    padding: 3rem 1.5rem;
+}
+
+/* Main article container */
+.post-page-container {
+    width: 100%;
+    max-width: 780px;
+}
+
+.post-view-header {
+    margin-bottom: 2rem;
+}
+
+/* Category pill */
+.post-view-category {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 0.875rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+}
+
+/* category variants */
+.post-view-category.article {
+    background: #dbeafe;
+    color: #1e40af;
+}
+
+/* Title */
+.post-view-title {
+    font-size: 2.5rem;
+    line-height: 1.2;
+    margin-bottom: 1rem;
+    color: var(--text-primary);
+}
+
+.post-view-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    padding: 1rem 0;
+    border-bottom: 2px solid var(--border);
+    margin-bottom: 2rem;
+    color: var(--text-secondary);
+}
+
+.post-view-meta-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.post-view-thumbnail {
+    width: 100%;
+    max-height: 400px;
+    object-fit: cover;
+    border-radius: var(--border-radius);
+    margin-bottom: 2rem;
+}
+
+.post-view-content {
+    font-size: 1.125rem;
+    line-height: 1.8;
+    color: var(--text-primary);
+    letter-spacing: 0.01em;
+}
+
+/* Paragraph readability */
+.post-view-content p {
+    margin-bottom: 1.5rem;
+    max-width: 70ch;
+}
+
+/* Headings inside content */
+.post-view-content h3 {
+    font-size: 1.6rem;
+    margin: 2.5rem 0 1rem;
+    line-height: 1.3;
+}
+
+/* Lists */
+.post-view-content ul,
+.post-view-content ol {
+    margin-bottom: 1.5rem;
+    padding-left: 2rem;
+}
+
+.post-view-content li {
+    margin-bottom: 0.5rem;
+}
+
+.post-view-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: 2px solid var(--border);
+}
+
+.post-view-tag {
+    background: var(--primary);
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 0.875rem;
+    font-weight: 600;
+}
+
+.toast {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: #333;
+    color: #fff;
+    padding: 12px 20px;
+    border-radius: 6px;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.3s ease;
+    z-index: 1000;
+}
+
+.toast.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+@media (max-width: 768px) {
+    .page-post {
+        padding: 1.5rem 1rem;
+    }
+
+    .post-view-title {
+        font-size: 2rem;
+    }
+
+    .post-view-content {
+        font-size: 1.05rem;
+    }
+
+    .post-view-meta {
+        font-size: 0.85rem;
+    }
+}

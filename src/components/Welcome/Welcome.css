@@ -1,0 +1,134 @@
+/* Uses same Google Fonts loaded by Hero.css */
+/* If Welcome is used without Hero, add this import: */
+/* @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garant:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Crimson+Pro:ital,wght@0,300;0,400;1,300;1,400&display=swap'); */
+
+/* ── Section Shell ── */
+.welcome {
+    background: #ffffff;
+    padding: 3.5rem 1.5rem;
+    text-align: center;
+    border-bottom: 1px solid rgba(45, 106, 79, 0.12);
+}
+
+/* ── Ornament ── */
+.welcome-ornament {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    max-width: 280px;
+    margin: 0 auto 2.75rem;
+    opacity: 0.35;
+}
+
+.welcome-ornament:last-child {
+    margin: 2.75rem auto 0;
+}
+
+.ornament-line {
+    flex: 1;
+    height: 1px;
+    background: #2D6A4F;
+}
+
+.ornament-gem {
+    font-size: 0.6rem;
+    color: #2D6A4F;
+}
+
+/* ── Inner Content ── */
+.welcome-inner {
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+/* ── Opening Line ── */
+.welcome-opener {
+    font-family: 'Cormorant Garant', Georgia, serif;
+    font-size: 1.65rem;
+    font-weight: 400;
+    color: #1A2E1A;
+    line-height: 1.5;
+    margin-bottom: 1.75rem;
+    letter-spacing: 0.01em;
+}
+
+/* ── Body Paragraphs ── */
+.welcome-body {
+    font-family: 'Crimson Pro', Georgia, serif;
+    font-size: 1.125rem;
+    font-weight: 400;
+    color: #3d3d3d;
+    line-height: 1.9;
+    margin-bottom: 1.5rem;
+}
+
+/* ── Pull Quote ── */
+.welcome-quote {
+    position: relative;
+    margin: 2.5rem auto;
+    padding: 1.75rem 2rem;
+    max-width: 560px;
+    border-top: 1px solid rgba(201, 168, 76, 0.55);
+    border-bottom: 1px solid rgba(201, 168, 76, 0.55);
+    font-family: 'Cormorant Garant', Georgia, serif;
+    font-size: 1.35rem;
+    font-style: italic;
+    font-weight: 300;
+    color: #2D6A4F;
+    line-height: 1.6;
+}
+
+.quote-mark {
+    font-family: 'Cormorant Garant', Georgia, serif;
+    font-size: 3.5rem;
+    line-height: 0;
+    vertical-align: -0.5rem;
+    color: #C9A84C;
+    opacity: 0.5;
+    font-style: normal;
+}
+
+/* ── Closing Line ── */
+.welcome-closing {
+    font-family: 'Crimson Pro', Georgia, serif;
+    font-size: 1.1rem;
+    font-weight: 400;
+    font-style: italic;
+    color: #5a5a5a;
+    line-height: 1.85;
+    margin-bottom: 0;
+}
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+    .welcome {
+        padding: 3rem 1.25rem;
+    }
+
+    .welcome-opener {
+        font-size: 1.35rem;
+    }
+
+    .welcome-body {
+        font-size: 1.05rem;
+    }
+
+    .welcome-quote {
+        font-size: 1.15rem;
+        padding: 1.5rem 1.25rem;
+        
+    }
+
+    .welcome-closing {
+        font-size: 1rem;
+    }
+
+    .quote-mark {
+    font-size: 3rem;
+    vertical-align: -1rem;
+    }
+
+    .welcome-quote {
+    font-size: 1.1rem;
+    }
+}

@@ -1,0 +1,205 @@
+/* ── Header Shell ── */
+.header {
+    background: var(--bg-primary);
+    border-bottom: 1px solid var(--border);
+    padding: 0.5rem 0;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: var(--shadow-sm);
+}
+
+/* ── Logo ── */
+.logo img {
+    width: 100px;
+    display: block;
+}
+
+/* ── Header Row ── */
+.header-content {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+}
+
+/* ── Hamburger — always in the DOM, hidden on desktop ── */
+.hamburger {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    width: 40px;
+    height: 36px;
+    padding: 4px 6px;
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+    background-color: color-mix(in srgb, var(--primary), transparent 20%);
+    transition: background 0.3s ease;
+    z-index: 101;
+}
+
+.hamburger span {
+    display: block;
+    background-color: var(--contrast-color, #fff);
+    border-radius: 5px;
+    height: 3px;
+    width: 26px;
+    transition: transform 0.35s ease, opacity 0.35s ease;
+    transform-origin: center;
+}
+
+/* Animate into X when open */
+.hamburger.hamburger-open span:nth-child(1) {
+    transform: translateY(8px) rotate(45deg);
+}
+
+.hamburger.hamburger-open span:nth-child(2) {
+    opacity: 0;
+    transform: scaleX(0);
+}
+
+.hamburger.hamburger-open span:nth-child(3) {
+    transform: translateY(-8px) rotate(-45deg);
+}
+
+/* ── Nav — MOBILE FIRST ── */
+.nav {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0;
+
+    /* Hidden by default on mobile */
+    position: absolute;
+    top: calc(100% + 0.5rem);
+    left: 0;
+    right: 0;
+
+    background: var(--bg-primary);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    box-shadow: var(--shadow-sm);
+
+    /* Collapse animation */
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    pointer-events: none;
+    transition: max-height 0.35s ease, opacity 0.3s ease;
+}
+
+/* Open state */
+.nav.nav-open {
+    max-height: 400px;
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* ── Nav Links ── */
+.nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0.5rem 0;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.nav ul li {
+    width: 100%;
+}
+
+.nav ul li a,
+.nav ul li .nav-item {
+    display: block;
+    padding: 0.75rem 1.25rem;
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.2s, background 0.2s;
+}
+
+.nav ul li a:hover {
+    color: var(--primary);
+    background: color-mix(in srgb, var(--primary), transparent 92%);
+}
+
+/* ── Social Links ── */
+.header-social-links {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1.25rem;
+    border-top: 1px solid var(--border);
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.header-social-links .link {
+    color: var(--text-secondary);
+    font-size: 1.1rem;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.header-social-links .link:hover {
+    color: var(--primary);
+}
+
+/* ── Desktop ── */
+@media (min-width: 992px) {
+
+    .hamburger {
+        display: none;
+    }
+
+    .nav {
+        /* Reset mobile overrides */
+        position: static;
+        flex-direction: row;
+        align-items: center;
+        gap: 1.5rem;
+
+        max-height: none;
+        overflow: visible;
+        opacity: 1;
+        pointer-events: auto;
+
+        background: none;
+        border: none;
+        border-radius: 0;
+        box-shadow: none;
+    }
+
+    .nav ul {
+        flex-direction: row;
+        padding: 0;
+        width: auto;
+    }
+
+    .nav ul li {
+        width: auto;
+    }
+
+    .nav ul li a {
+        padding: 0.5rem 0.75rem;
+    }
+
+    .nav ul li a:hover {
+        background: transparent;
+    }
+
+    .header-social-links {
+        border-top: none;
+        padding: 0;
+        width: auto;
+    }
+
+    .logo img {
+        width: 120px;
+    }
+}

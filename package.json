@@ -6,16 +6,23 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "seed": "node --experimental-vm-modules src/lib/seed.js"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.105.4",
+    "bootstrap-icons": "^1.13.1",
     "next": "16.2.6",
     "react": "19.2.4",
-    "react-dom": "19.2.4"
+    "react-dom": "19.2.4",
+    "react-quill-new": "^3.8.3"
   },
   "devDependencies": {
+    "@types/node": "25.8.0",
+    "@types/react": "19.2.14",
     "babel-plugin-react-compiler": "1.0.0",
     "eslint": "^9",
-    "eslint-config-next": "16.2.6"
+    "eslint-config-next": "16.2.6",
+    "typescript": "6.0.3"
   }
 }

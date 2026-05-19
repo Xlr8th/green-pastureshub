@@ -1,0 +1,211 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garant:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Crimson+Pro:ital,wght@0,300;0,400;1,300;1,400&display=swap');
+
+/* ── Hero Shell ── */
+.hero {
+    position: relative;
+    color: white;
+    padding: 5.5rem 0 4.5rem;
+    text-align: center;
+    overflow: hidden;
+    min-height: 440px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+/* ── Slideshow ── */
+.hero-slides {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+}
+
+.hero-slide {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    opacity: 0;
+    transition: opacity 1.4s ease-in-out;
+    transform: scale(1.03);
+    animation: hero-slow-zoom 16s ease-in-out infinite alternate;
+}
+
+.hero-slide.active {
+    opacity: 1;
+}
+
+@keyframes hero-slow-zoom {
+    from { transform: scale(1.0); }
+    to   { transform: scale(1.06); }
+}
+
+/* ── Overlay ── */
+.hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        160deg,
+        rgba(10, 30, 10, 0.45) 0%,
+        rgba(0, 0, 0, 0.60) 55%,
+        rgba(10, 30, 10, 0.72) 100%
+    );
+    z-index: 1;
+}
+
+/* ── Content ── */
+.hero-content {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    opacity: 0;
+    transform: translateY(22px);
+    transition: opacity 1s cubic-bezier(0.22, 1, 0.36, 1),
+                transform 1s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.hero-content.hero-loaded {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* ── Eyebrow ── */
+.hero-eyebrow {
+    font-family: 'Crimson Pro', Georgia, serif;
+    font-size: 0.85rem;
+    font-weight: 300;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    opacity: 0.65;
+    margin-bottom: 1.1rem;
+}
+
+/* ── Title ── */
+.hero-title {
+    font-family: 'Cormorant Garant', Georgia, serif;
+    font-size: 4.2rem;
+    font-weight: 300;
+    letter-spacing: 0.06em;
+    line-height: 1.08;
+    margin: 0 0 1rem;
+    text-shadow: 0 4px 30px rgba(0, 0, 0, 0.35);
+}
+
+/* ── Decorative Divider ── */
+.hero-divider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.9rem;
+    max-width: 180px;
+    margin: 0 auto 1.4rem;
+}
+
+.hero-divider-line {
+    flex: 1;
+    height: 1px;
+    background: rgba(255, 255, 255, 0.35);
+}
+
+.hero-divider-gem {
+    font-size: 0.65rem;
+    color: #C9A84C;
+    opacity: 0.85;
+}
+
+/* ── Subtitle ── */
+.hero-subtitle {
+    font-family: 'Crimson Pro', Georgia, serif;
+    font-size: 1.2rem;
+    font-weight: 300;
+    font-style: italic;
+    opacity: 0.82;
+    margin-bottom: 2.75rem;
+    letter-spacing: 0.025em;
+}
+
+/* ── Search ── */
+.search-container {
+    max-width: 540px;
+    margin: 0 auto;
+}
+
+#search-input {
+    width: 100%;
+    padding: 0.95rem 1.75rem;
+    font-family: 'Crimson Pro', Georgia, serif;
+    font-size: 1rem;
+    font-weight: 300;
+    letter-spacing: 0.02em;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: 3px;
+    background: rgba(255, 255, 255, 0.10);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    color: white;
+    outline: none;
+    box-sizing: border-box;
+    transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+#search-input::placeholder {
+    color: rgba(255, 255, 255, 0.50);
+    font-style: italic;
+}
+
+#search-input:focus {
+    background: rgba(255, 255, 255, 0.18);
+    border-color: rgba(201, 168, 76, 0.65);
+    box-shadow: 0 0 0 3px rgba(201, 168, 76, 0.12);
+}
+
+/* ── Slide Dots ── */
+.hero-dots {
+    position: absolute;
+    bottom: 1.6rem;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    z-index: 3;
+}
+
+.hero-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    border: none;
+    background: rgba(255, 255, 255, 0.35);
+    cursor: pointer;
+    padding: 0;
+    transition: all 0.35s ease;
+}
+
+.hero-dot.active {
+    width: 22px;
+    height: 6px;
+    border-radius: 3px;
+    background: #C9A84C;
+}
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+    .hero {
+        min-height: 380px;
+        padding: 4.5rem 0 3.5rem;
+    }
+
+    .hero-title {
+        font-size: 2.85rem;
+    }
+
+    .hero-subtitle {
+        font-size: 1.05rem;
+    }
+
+    .hero-eyebrow {
+        font-size: 0.75rem;
+    }
+}
