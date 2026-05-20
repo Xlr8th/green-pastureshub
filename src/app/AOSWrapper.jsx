@@ -7,7 +7,7 @@ export default function AOSWrapper({ children }) {
   useEffect(() => {
     AOS.init({
       duration: 800,
-      once: false,
+      once: true,
     })
     AOS.refresh();
   }, [])

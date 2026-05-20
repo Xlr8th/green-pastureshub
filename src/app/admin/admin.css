@@ -60,10 +60,3 @@
     opacity: 0.6;
     cursor: not-allowed;
 }
-
-/* Error text */
-.admin-error {
-    color: var(--danger);
-    font-size: 13px;
-    text-align: center;
-}

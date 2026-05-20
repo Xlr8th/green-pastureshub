@@ -4,6 +4,7 @@ import { useState } from "react"
 import { useRouter } from "next/navigation"
 import { supabase } from "../../lib/supabase"
 import './admin.css'
+import Toast from '../../components/Toast/Toast'
 
 export default function AdminLogin() {
     const router = useRouter()
@@ -12,6 +13,17 @@ export default function AdminLogin() {
     const [password, setPassword] = useState("")
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState("")
+    const [isToastVisible, setIsToastVisible] = useState(false)
+
+    const showToast = (message) => {
+        setError(message)
+        setIsToastVisible(true)
+
+        setTimeout(() => {
+            setError("")
+            setIsToastVisible(false)
+        }, 2500)
+    }
 
     const handleSubmit = async (e) => {
         e.preventDefault()
@@ -26,14 +38,14 @@ export default function AdminLogin() {
         })
 
         if (error) {
-            setError(error.message)
+            showToast(error.message)
             return
         }
 
         router.push("/admin/create") 
         }
         catch (error) {
-            setError('Something went wrong. Please try again.')
+            showToast('Something went wrong. Please try again.')
         }
         finally {
             setLoading(false)
@@ -64,7 +76,10 @@ export default function AdminLogin() {
                     {loading ? "Logging in..." : "Login"}
                 </button>
 
-                {error && <p className="adim-error">{error}</p>}
+                {error && <Toast 
+                    isVisble={isToastVisible}
+                    message={error}
+                />}
             </form>
         </div>
     )

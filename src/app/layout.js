@@ -1,6 +1,5 @@
 import "./globals.css";
 import { Cormorant_Garamond, Crimson_Pro } from 'next/font/google';
-import Footer from "../components/Footer/Footer";
 import AOSWrapper from "./AOSWrapper";
 import ClientLayout from "./LayoutClient";
 import "bootstrap-icons/font/bootstrap-icons.css";
@@ -33,7 +32,6 @@ export default function RootLayout({ children }) {
           <ClientLayout>          
             {children}
           </ClientLayout>
-          <Footer />
         </AOSWrapper>
       </body>
     </html>

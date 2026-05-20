@@ -3,7 +3,7 @@ import Subscribe from '../Subscribe/Subscribe';
 import './Footer.css';
 import Link from 'next/link';
 
-const Footer = ({ onScrollToSection }) => {
+const Footer = ({ onScrollToSection, showToast }) => {
   const currentYear = new Date().getFullYear();
 
   const scrollTo = (id) => {
@@ -66,7 +66,9 @@ const Footer = ({ onScrollToSection }) => {
         </div>
 
         {/* Scripture */}
-        <Subscribe />
+        <Subscribe 
+          showToast={showToast}
+        />
         {/* <div className="footer-col footer-scripture-col" data-aos="fade-up">
           <h3 className="footer-col-title">A Word</h3>
           <blockquote className="footer-scripture">

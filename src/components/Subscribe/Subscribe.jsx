@@ -3,17 +3,13 @@
 import { useState } from 'react'
 import './Subscribe.css'
 
-const Subscribe = () => {
-    const [email, setEmail] = useState('')
-    const [message, setMessage] = useState('')
-    const [loading, setLoading] = useState(false)
+const Subscribe = ({showToast}) => {
+    const [email, setEmail] = useState('');
+    const [loading, setLoading] = useState(false);
 
     const handleSubmit = async (e) => {
-        e.preventDefault()
-
-        setLoading(true)
-        setMessage('')
-
+        e.preventDefault();
+        setLoading(true);
        
         try {
             const response = await fetch('/api/subscribe', {
@@ -27,14 +23,14 @@ const Subscribe = () => {
             const data = await response.json()
 
             if (!response.ok) {
-                setMessage(data.error)
+                showToast(data.error)
             } else {
-                setMessage(data.message)
+                showToast(data.message)
                 setEmail('')
             }
         } 
         catch (error) {
-            setMessage('Something went wrong. Please try again.')            
+            showToast('Something went wrong. Please try again.')            
         } 
         finally {
           setLoading(false)  
@@ -61,7 +57,6 @@ const Subscribe = () => {
                 </button>
             </form>
 
-            {message && <p>{message}</p>}
         </div>
     )
 }
