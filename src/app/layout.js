@@ -27,12 +27,13 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en" className={`${cormorant.variable} ${crimson.variable}`}>
-      <body>
-        <AOSWrapper>
-          <ClientLayout>          
-            {children}
-          </ClientLayout>
-        </AOSWrapper>
+      <body>        
+        <ClientLayout>
+          <AOSWrapper>
+            {children}  
+          </AOSWrapper>  
+        </ClientLayout>
+       
       </body>
     </html>
   );

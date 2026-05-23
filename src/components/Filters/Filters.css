@@ -1,7 +1,8 @@
 .filters {
-    background: var(--bg-primary);
+    background: color-mix(in srgb, var(--bg-primary), transparent 10%);
     padding: 1.5rem 0;
     border-bottom: 1px solid var(--border);
+    backdrop-filter: blur(12px);
 }
 
 .filters .container {

@@ -3,9 +3,7 @@ import { useState } from "react";
 import FilterBar from "./Filters/FilterBar";
 import Hero from "./Hero/Hero";
 import PostsGrid from "./PostCard/PostsGrid";
-import PostModal from "./PostModal/PostModal";
 import Welcome from "./Welcome/Welcome";
-import { supabase } from "../lib/supabase";
 
 const Home = ({ posts: initialPosts }) => {
     //states
@@ -125,7 +123,11 @@ const Home = ({ posts: initialPosts }) => {
                <Welcome /> 
             </section>
             
-            <section id="category">
+            <section id="category" style={{
+            position: "sticky",
+            top: "73px", // match your header height
+            zIndex: 90
+            }}>
                 <FilterBar 
                     currentSubCategory={currentSubCategory}
                     onSubCategory={handleSubCategory}
