@@ -123,11 +123,7 @@ const Home = ({ posts: initialPosts }) => {
                <Welcome /> 
             </section>
             
-            <section id="category" style={{
-            position: "sticky",
-            top: "73px", // match your header height
-            zIndex: 90
-            }}>
+            <section id="category">
                 <FilterBar 
                     currentSubCategory={currentSubCategory}
                     onSubCategory={handleSubCategory}
