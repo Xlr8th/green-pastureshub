@@ -123,7 +123,7 @@ const Home = ({ posts: initialPosts }) => {
                <Welcome /> 
             </section>
             
-            <section id="category">
+            <section id="category" >
                 <FilterBar 
                     currentSubCategory={currentSubCategory}
                     onSubCategory={handleSubCategory}
