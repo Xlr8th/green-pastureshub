@@ -77,7 +77,7 @@ export default function AdminLogin() {
                 </button>
 
                 {error && <Toast 
-                    isVisble={isToastVisible}
+                    isVisible={isToastVisible}
                     message={error}
                 />}
             </form>

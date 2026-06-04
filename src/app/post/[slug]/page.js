@@ -1,5 +1,6 @@
 import { supabase } from "../../../lib/supabase";
 import PostViewTracker from "../PostViewTracker";
+import CommentSection from "../../../components/Comment/CommentSection";
 import './post.css'
 
 export async function generateMetadata({ params }) {
@@ -8,7 +9,7 @@ export async function generateMetadata({ params }) {
     const { data: post } = await supabase
     .from('posts')
     .select('title, excerpt')
-    .eq('slug', params.slug)
+    .eq('slug', params)
     .single()
 
     return {
@@ -34,6 +35,19 @@ const page = async ({ params }) => {
   const renderTags = () => (tags?.map(tag => (
         <span key={tag} className="post-view-tag">#{tag}</span>
     )));
+
+    const { data: initialComments } = await supabase
+    .from('comments')
+    .select(`
+        id,
+        content,
+        created_at,
+        user_id,
+        profiles (display_name),
+        comment_likes (id, user_id)
+    `)
+    .eq('post_id', post.id)
+    .order('created_at', { ascending: false })
 
   return (
     <main className="page-post">
@@ -75,6 +89,10 @@ const page = async ({ params }) => {
             <footer className="post-view-tags">
                 {renderTags()}
             </footer>
+            <CommentSection
+                postId={post.id}
+                initialComments={initialComments || []}
+            />
                 
                        
         </article>

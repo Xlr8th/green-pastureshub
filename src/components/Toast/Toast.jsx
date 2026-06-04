@@ -1,10 +1,10 @@
 import './Toast.css'
 
 
-const Toast = ({message, isVisble}) => {
+const Toast = ({message, isVisible}) => {
   if (!message) return null;
   return (
-    <div className={isVisble ? 'toast show' : 'toast'}> 
+    <div className={isVisible ? 'toast show' : 'toast'}> 
         {message}     
     </div>
   )

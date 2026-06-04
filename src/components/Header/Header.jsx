@@ -2,14 +2,29 @@
 import { useState } from 'react';
 import './Header.css';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { useAuth } from '../../lib/AuthContext';
+import { supabase } from '../../lib/supabase';
 
 const Header = () => {
+  const router = useRouter();
+
+  const { user } = useAuth();
+
   const [isOpen, setIsOpen] = useState(false);
 
   const onToggle = () => setIsOpen(prev => !prev);
 
   const closeMenu = () => setIsOpen(false);
 
+
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+    closeMenu();
+    router.push('/');
+  };
+
+  
   return (
     <header className="header">
       <div className="container">
@@ -41,21 +56,34 @@ const Header = () => {
               <li><Link href="/" onClick={closeMenu}>Categories</Link></li>
               <li><Link href="" onClick={closeMenu}>Subscribe</Link></li>
             </ul>
+            <div className="header-actions">
+              <div className="header-social-links">
+                <a href="https://x.com/edith_oise" className="twitter link" aria-label="Twitter">
+                  <i className="bi bi-twitter-x"></i>
+                </a>
+                <a href="https://www.facebook.com/share/1D6T413E4a/" className="facebook link" aria-label="Facebook">
+                  <i className="bi bi-facebook"></i>
+                </a>
+                <a href="https://www.instagram.com/edithoise?igsh=NTVldDhreGYzbmpy" className="instagram link" aria-label="Instagram">
+                  <i className="bi bi-instagram"></i>
+                </a>
+              </div>
 
-            <div className="header-social-links">
-              <a href="#" className="twitter link" aria-label="Twitter">
-                <i className="bi bi-twitter-x"></i>
-              </a>
-              <a href="#" className="facebook link" aria-label="Facebook">
-                <i className="bi bi-facebook"></i>
-              </a>
-              <a href="#" className="instagram link" aria-label="Instagram">
-                <i className="bi bi-instagram"></i>
-              </a>
-              <a href="#" className="linkedin link" aria-label="LinkedIn">
-                <i className="bi bi-linkedin"></i>
-              </a>
-            </div>
+              <div className="header-auth">
+                {user ? (
+                  <>
+                    <span className="user-email">
+                      {user.email.split('@')[0]}
+                    </span>
+                    <button className="logout-btn" onClick={handleLogout}>
+                      Logout
+                    </button>
+                  </>
+                ) : (
+                  <Link href='/login' className='login-btn' onClick={closeMenu}>Login</Link>
+                )}
+              </div>
+            </div>            
           </nav>
 
         </div>

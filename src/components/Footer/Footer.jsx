@@ -28,17 +28,14 @@ const Footer = ({ onScrollToSection, showToast }) => {
 
           {/* Social links */}
           <div className="footer-social">
-            <a href="#" className="footer-social-link" aria-label="Twitter / X">
+            <a href="https://x.com/edith_oise" className="footer-social-link" aria-label="Twitter / X">
               <i className="bi bi-twitter-x"></i>
             </a>
-            <a href="#" className="footer-social-link" aria-label="Facebook">
+            <a href="https://www.facebook.com/share/1D6T413E4a/" className="footer-social-link" aria-label="Facebook">
               <i className="bi bi-facebook"></i>
             </a>
-            <a href="#" className="footer-social-link" aria-label="Instagram">
+            <a href="https://www.instagram.com/edithoise?igsh=NTVldDhreGYzbmpy" className="footer-social-link" aria-label="Instagram">
               <i className="bi bi-instagram"></i>
-            </a>
-            <a href="#" className="footer-social-link" aria-label="LinkedIn">
-              <i className="bi bi-linkedin"></i>
             </a>
           </div>
         </div>

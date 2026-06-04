@@ -4,6 +4,7 @@ import Header from "../components/Header/Header";
 import BackToTop from "../components/BackToTop/BackToTop";
 import Toast from "../components/Toast/Toast";
 import Footer from "../components/Footer/Footer";
+import { AuthProvider } from "../lib/AuthContext";
 
 const ClientLayout = ({ children }) => {
     const [backToTop, setBackToTop] = useState(false);
@@ -40,20 +41,25 @@ const ClientLayout = ({ children }) => {
 
     return (
         <>
-            <Header />
+        <AuthProvider>
+          <Header />
 
             <Toast 
-                isVisble={isToastVisible}
+                isVisible={isToastVisible}
                 message={toastMessage}
             />
             
             <BackToTop
                 backToTop={backToTop} 
             />
+
             {children}  {/* ← each page renders here */}
+
             <Footer 
                 showToast={showToast}
-            />
+            />  
+        </AuthProvider>
+            
         </>
     )
 }
