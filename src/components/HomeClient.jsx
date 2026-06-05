@@ -1,9 +1,11 @@
 'use client'
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import FilterBar from "./Filters/FilterBar";
 import Hero from "./Hero/Hero";
 import PostsGrid from "./PostCard/PostsGrid";
 import Welcome from "./Welcome/Welcome";
+import { useSearchParams } from 'next/navigation';
+
 
 const Home = ({ posts: initialPosts }) => {
     //states
@@ -13,6 +15,17 @@ const Home = ({ posts: initialPosts }) => {
     const [currentSubCategory, setCurrentSubCategory] = useState('all');
     // const [isModalOpen, setIsModalOpen] = useState(false);
     // const [selectedPost, setSelectedPost] = useState(null);
+    
+
+    const searchParams = useSearchParams();
+
+    useEffect(() => {
+    const category = searchParams.get('category');
+
+    if (category) {
+        setCurrentSubCategory(category);
+    }
+    }, [searchParams]);
 
     const getPostBySubCategory = (currentSubCategory, posts) => currentSubCategory === 'all' ? posts : posts.filter(post => post.subCategory === currentSubCategory);
 

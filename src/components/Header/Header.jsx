@@ -52,9 +52,9 @@ const Header = () => {
           <nav className={`nav ${isOpen ? 'nav-open' : ''}`}>
             <ul>
               <li><Link href="/" onClick={closeMenu}>Home</Link></li>
-              <li><Link href="/" onClick={closeMenu}>About</Link></li>
-              <li><Link href="/" onClick={closeMenu}>Categories</Link></li>
-              <li><Link href="" onClick={closeMenu}>Subscribe</Link></li>
+              <li><Link href="/#about" onClick={closeMenu}>About</Link></li>
+              <li><Link href="/#category" onClick={closeMenu}>Categories</Link></li>
+              <li><Link href="/#subscribe" onClick={closeMenu}>Subscribe</Link></li>
             </ul>
             <div className="header-actions">
               <div className="header-social-links">

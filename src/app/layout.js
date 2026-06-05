@@ -3,6 +3,7 @@ import { Cormorant_Garamond, Crimson_Pro } from 'next/font/google';
 import AOSWrapper from "./AOSWrapper";
 import ClientLayout from "./LayoutClient";
 import "bootstrap-icons/font/bootstrap-icons.css";
+import HashScroller from "../components/HashScroller";
 
 const cormorant = Cormorant_Garamond({
   subsets: ['latin'],
@@ -30,6 +31,7 @@ export default function RootLayout({ children }) {
       <body>        
         <ClientLayout>
           <AOSWrapper>
+            <HashScroller />
             {children}  
           </AOSWrapper>  
         </ClientLayout>

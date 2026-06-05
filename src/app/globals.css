@@ -4,11 +4,6 @@
   box-sizing: border-box;
 }
 
-:root {
-  --font-heading: var(--font-cormorant);
-  --font-accent: var(--font-crimson)
-}
-
 body {
     font-family: Georgia, serif;
 }
@@ -51,6 +46,15 @@ body {
     /* Spacing */
     --container-width: 1200px;
     --border-radius: 8px;
+
+    /* font */
+    --font-heading: var(--font-cormorant);
+    --font-accent: var(--font-crimson)
+}
+
+#about,
+#category {
+  scroll-margin-top: 80px;
 }
 
 .icon-primary {

@@ -39,7 +39,7 @@ const Subscribe = ({showToast}) => {
     }
 
     return (
-        <div className="footer-col subscribe" data-aos="fade-up" >
+        <div id='subscribe' className="footer-col subscribe" data-aos="fade-up" >
             <h6 className="footer-col-title">Our Newsletter</h6>
             <p>Subscribe to get more information about our service</p>
             <form onSubmit={handleSubmit}>

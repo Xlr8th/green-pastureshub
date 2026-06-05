@@ -3,13 +3,8 @@ import Subscribe from '../Subscribe/Subscribe';
 import './Footer.css';
 import Link from 'next/link';
 
-const Footer = ({ onScrollToSection, showToast }) => {
+const Footer = ({ showToast }) => {
   const currentYear = new Date().getFullYear();
-
-  const scrollTo = (id) => {
-    const el = document.getElementById(id);
-    if (el) el.scrollIntoView({ behavior: 'smooth' });
-  };
 
   return (
     <footer className="footer">
@@ -45,9 +40,8 @@ const Footer = ({ onScrollToSection, showToast }) => {
           <h3 className="footer-col-title">Quick Links</h3>
           <ul className="footer-links">
             <li><Link href = "/">Home</Link></li>
-            <li><button onClick={() => scrollTo('about')}>About</button></li>
-            <li><button onClick={() => scrollTo('category')}>Categories</button></li>
-            <li><button>Subscribe</button></li>
+            <li><Link href="/#about">About</Link></li>
+            <li><Link href="/#category">Categories</Link></li>
           </ul>
         </div>
 
@@ -55,18 +49,32 @@ const Footer = ({ onScrollToSection, showToast }) => {
         <div className="footer-col" data-aos="fade-up">
           <h3 className="footer-col-title">Categories</h3>
           <ul className="footer-links">
-            <li><button onClick={() => scrollTo('category')}>Word</button></li>
-            <li><button onClick={() => scrollTo('category')}>Parenting</button></li>
-            <li><button onClick={() => scrollTo('category')}>Marriage</button></li>
-            <li><button onClick={() => scrollTo('category')}>Lifestyle</button></li>
+            <li>
+              <Link href="/?category=word#category">
+                Word
+              </Link>
+            </li>
+            <li>
+              <Link href="/?category=parenting#category">
+                Parenting
+              </Link>
+            </li>
+            <li>
+              <Link href="/?category=relationships#category">
+                Relationships
+              </Link>
+            </li>
+            <li>
+              <Link href="/?category=lifestyle#category">
+                Lifestyle
+              </Link>
+            </li>
           </ul>
         </div>
 
         {/* Scripture */}
-        <Subscribe 
-          showToast={showToast}
-        />
-        {/* <div className="footer-col footer-scripture-col" data-aos="fade-up">
+        
+        <div className="footer-col footer-scripture-col" data-aos="fade-up">
           <h3 className="footer-col-title">A Word</h3>
           <blockquote className="footer-scripture">
             <p>
@@ -75,8 +83,13 @@ const Footer = ({ onScrollToSection, showToast }) => {
             </p>
             <cite>— Psalm 23:2–3</cite>
           </blockquote>
-        </div> */}
+        </div> 
 
+       
+        <Subscribe 
+          showToast={showToast}
+        />
+      
       </div>
 
       {/* Bottom bar */}

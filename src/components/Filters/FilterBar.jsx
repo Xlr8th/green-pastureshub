@@ -2,7 +2,7 @@
 import './Filters.css'
 import FilterButton from './FilterButton';
 
-const FilterBar = ({ currentFilter, onFilter, currentSubCategory, onSubCategory, currentSort, onSort }) => {
+const FilterBar = ({ currentSubCategory, onSubCategory, currentSort, onSort }) => {
 
   const filters = [
     { label: 'All Content', category: 'all' },
