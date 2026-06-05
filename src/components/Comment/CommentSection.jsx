@@ -70,8 +70,9 @@ const CommentThread = ({ comment, user, toggleLike, handleDelete }) => {
 }
 
 
-const CommentSection = ({ postId, initialComments }) => {
+const CommentSection = ({ postId, initialComments, slug }) => {
     const { user } = useAuth();
+    const router = useRouter();
 
     const [comments, setComments] = useState(
     (initialComments || []).map(comment => ({
@@ -134,10 +135,10 @@ const CommentSection = ({ postId, initialComments }) => {
         setLoading(false);
       }
     };
-    // toggle like locally
+    // toggle like 
     const toggleLike = async (commentId) => {
       if (!user) {
-        router.push('/login')
+        router.push(`/login?redirect=/post/${slug}`)
         return;
       }
       try {
@@ -236,7 +237,7 @@ const CommentSection = ({ postId, initialComments }) => {
           <div className="login-prompt">
             <p>Login to leave a comment.</p>
 
-            <Link href="/login">
+            <Link href={`/login?redirect=/post/${slug}`}>
               Login
             </Link>
           </div>

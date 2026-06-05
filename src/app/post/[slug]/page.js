@@ -91,6 +91,7 @@ const page = async ({ params }) => {
             </footer>
             <CommentSection
                 postId={post.id}
+                slug={slug}
                 initialComments={initialComments || []}
             />
                 

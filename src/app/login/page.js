@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { supabase } from "../../lib/supabase";
 import Toast from '../../components/Toast/Toast';
 import './login.css'
+import { useSearchParams } from "next/navigation";
 
 export default function LoginPage() {
     const router = useRouter();
@@ -14,9 +15,13 @@ export default function LoginPage() {
     const [password, setPassword] = useState("");
     const [loading, setLoading] = useState(false);
     const [isLogin, setIsLogin] = useState(true);
+    const [showPassword, setShowPassword] = useState(false);
 
     const [toastMessage, setToastMessage] = useState("");
     const [isToastVisible, setIsToastVisible] = useState(false);
+
+    const searchParams = useSearchParams();
+    const redirect = searchParams.get('redirect');
 
     const showToast = (message) => {
         setToastMessage(message)
@@ -46,7 +51,7 @@ export default function LoginPage() {
                 showToast("Successfully logged in.");
 
                 setTimeout(() => {
-                    router.push('/');
+                    router.push(redirect || '/');
                 }, 2000);
             }
             else {
@@ -141,14 +146,23 @@ export default function LoginPage() {
                         required
                     />
 
-                    <input
-                        type="password"
-                        placeholder="Password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        autoComplete={isLogin ? "current-password" : "new-password"}
-                        required
-                    />
+                    <div className="password-wrapper">
+                        <input
+                            type={showPassword ? "text" : "password"}
+                            placeholder="Password"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            autoComplete={isLogin ? "current-password" : "new-password"}
+                            required
+                        />
+                        <button
+                            type="button"
+                            className="password-toggle"
+                            onClick={() => setShowPassword(prev => !prev)}
+                        >
+                            <i className={`bi ${showPassword ? 'bi-eye-slash' : 'bi-eye'}`}></i>
+                        </button>
+                    </div>                    
                     
 
                     <button type="submit" disabled={loading}>
