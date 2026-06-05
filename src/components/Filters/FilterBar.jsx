@@ -16,7 +16,7 @@ const FilterBar = ({ currentFilter, onFilter, currentSubCategory, onSubCategory,
     { subCategory: 'all', subLabel: 'All Articles' },
     { subCategory: 'word', subLabel: 'Word' },
     { subCategory: 'parenting', subLabel: 'Parenting' },
-    { subCategory:'marriage', subLabel: 'Marriage' },
+    { subCategory:'relationships', subLabel: 'Relationships' },
     { subCategory: 'lifestyle', subLabel: 'Lifestyle' },
     { subCategory: 'covenant thought', subLabel: 'Covenant thought'},
     { subCategory: 'ChitChat', subLabel: 'ChitChat'}
