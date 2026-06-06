@@ -1,36 +1,132 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Green Pastures
+
+A full-stack Christian/Godly content blog built with Next.js and Supabase, deployed at [greenpastureshub.com](https://greenpastureshub.com).
+
+---
+
+## About
+
+Green Pastures is a faith-based blog platform where readers can explore Christian content across various categories, engage with posts through comments, and subscribe to the newsletter for updates.
+
+---
+
+## Features
+
+- **Blog Homepage** — Posts fetched from Supabase with filtering by category, sorting, and search
+- **Individual Post Pages** — Full post view with SEO metadata, view tracking, and rich content
+- **View Tracking** — localStorage prevents duplicate view counts per user per post
+- **Newsletter Subscription** — Email subscription with duplicate prevention
+- **Admin System** — Protected admin login and post creation with React Quill rich text editor
+- **User Authentication** — Register and login with email/password, display name, and email confirmation
+- **Comment System** — Authenticated users can post, delete, and like comments on posts
+- **Redirect After Login** — Users are returned to the post they came from after logging in
+- **Responsive Design** — Mobile-friendly layout with animated scroll effects
+
+---
+
+## Tech Stack
+
+| Technology | Purpose |
+|---|---|
+| Next.js 16.2.6 (App Router) | Frontend framework |
+| React 19 | UI library |
+| Supabase (PostgreSQL) | Database and authentication |
+| Vercel | Deployment and hosting |
+| React Quill | Rich text editor for admin |
+| AOS (Animate on Scroll) | Scroll animations |
+
+---
+
+## Database Tables
+
+| Table | Purpose |
+|---|---|
+| `posts` | Blog articles with metadata |
+| `subscribers` | Newsletter email subscribers |
+| `profiles` | Public user display names |
+| `comments` | Post comments by authenticated users |
+| `comment_likes` | Likes on comments |
+
+---
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
 
+- Node.js v22+
+- A Supabase project with the tables listed above
+
+### Installation
+
+1. Clone the repository:
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/Xlr8th/green-pastureshub.git
+cd green-pastures
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. Install dependencies:
+```bash
+npm install
+```
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+3. Create a `.env.local` file in the root directory:
+```env
+NEXT_PUBLIC_SUPABASE_URL=your_supabase_project_url
+NEXT_PUBLIC_SUPABASE_KEY=your_supabase_anon_key
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+4. Run the development server:
+```bash
+npm run dev
+```
 
-## Learn More
+5. Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Project Structure
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```
+src/
+├── app/
+│   ├── admin/          ← Admin login and post creation
+│   ├── post/[slug]/    ← Individual post pages
+│   ├── login/          ← User authentication
+│   ├── api/subscribe/  ← Newsletter API route
+│   └── page.js         ← Homepage
+├── components/         ← Reusable UI components
+└── lib/
+    ├── supabase.js     ← Supabase client
+    └── AuthContext.jsx ← Global auth state
+```
 
-## Deploy on Vercel
+---
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 💡 Product Decisions
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+A few intentional design choices worth noting:
+
+- **No email confirmation on signup** — Reduces friction for new readers, keeping the onboarding experience smooth
+- **Display names instead of emails** — Protects user privacy in public comment sections
+- **Post-login redirect** — Users are returned to the article they were reading after authenticating, rather than a generic dashboard
+
+---
+
+## Deployment
+
+The project is deployed on Vercel. Environment variables are configured in the Vercel dashboard.
+
+Live site: [greenpastureshub.com](https://greenpastureshub.com)
+
+---
+
+## Author
+
+Built and designed by **Xlr8th**
+GitHub: [@Xlr8th](https://github.com/Xlr8th)
+
+---
+
+## License
+
+This project is private and built for a specific client. The codebase is shared publicly for portfolio purposes.

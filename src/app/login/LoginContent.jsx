@@ -16,6 +16,7 @@ export default function LoginContent() {
     const [loading, setLoading] = useState(false);
     const [isLogin, setIsLogin] = useState(true);
     const [showPassword, setShowPassword] = useState(false);
+    const [confirmPassword, setConfirmPassword] = useState('');
 
     const [toastMessage, setToastMessage] = useState("");
     const [isToastVisible, setIsToastVisible] = useState(false);
@@ -55,6 +56,11 @@ export default function LoginContent() {
                 }, 2000);
             }
             else {
+                if (password !== confirmPassword) {
+                    showToast('Passwords do not match');
+                    return;
+
+                };
 
                 const { data: existingProfile, error: checkError } = await supabase
                 .from("profiles")
@@ -162,7 +168,26 @@ export default function LoginContent() {
                         >
                             <i className={`bi ${showPassword ? 'bi-eye-slash' : 'bi-eye'}`}></i>
                         </button>
-                    </div>                    
+                    </div>
+                    {!isLogin && (
+                        <div className="password-wrapper">
+                        <input
+                            type={showPassword ? "text" : "password"}
+                            placeholder="Confirm Password"
+                            value={confirmPassword}
+                            onChange={(e) => setConfirmPassword(e.target.value)}
+                            autoComplete={isLogin ? "current-password" : "new-password"}
+                            required
+                        />
+                        <button
+                            type="button"
+                            className="password-toggle"
+                            onClick={() => setShowPassword(prev => !prev)}
+                        >
+                            <i className={`bi ${showPassword ? 'bi-eye-slash' : 'bi-eye'}`}></i>
+                        </button>
+                    </div>
+                    )}                    
                     
 
                     <button type="submit" disabled={loading}>
