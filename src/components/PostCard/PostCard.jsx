@@ -4,28 +4,8 @@ import Link from 'next/link';
 
 const PostCard = ({
     id, title, slug, author, category, subCategory,
-    excerpt, thumbnail, publishedDate, price, duration,
-    readTime, views, rating, featured,
-    onViewPost, onAddToCart
+    excerpt, thumbnail, publishedDate, readTime, views, featured
   }) => {
-
-  // Button text based on category
-  const buttonText = {
-      article: 'Read More',
-      book: '🛒 Add to Cart',
-      video: '▶️ Watch Now',
-      audio: '🎧 Listen Now'
-  };
-
-  // Handle button click
-  const handleActionClick = (e) => {
-      e.stopPropagation();
-      if (category === 'book') {
-          onAddToCart(id);
-      } else {
-        onViewPost(slug);
-      }
-  };
 
   return (
         <Link href={`/post/${slug}`} style={{ textDecoration: 'none',
@@ -76,34 +56,8 @@ const PostCard = ({
                         </div>
                     )}
 
-                    {category === 'book' && (
-                        <div className="post-footer">
-                            <div className="book-price">
-                                ₦{price?.toLocaleString()}
-                            </div>
-                            <div className="book-rating">
-                                ⭐ {rating} / 5.0
-                            </div>
-                        </div>
-                    )}
-
-                    {(category === 'video' || category === 'audio') && (
-                        <div className="post-footer">
-                            <div className="post-stats">
-                                <span>👁 {views?.toLocaleString()}</span>
-                            </div>
-                        </div>
-                    )}
-
-                    {/* Action button */}
-                    <button
-                        className={category === 'book'
-                            ? 'add-to-cart-btn'
-                            : 'read-more-btn'
-                        }
-                        onClick={handleActionClick}
-                    >
-                        {buttonText[category]}
+                    <button className='read-more-btn'>
+                        Read More
                     </button>
 
                 </div>

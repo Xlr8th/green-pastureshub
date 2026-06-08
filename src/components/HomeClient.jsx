@@ -16,15 +16,10 @@ const Home = ({ posts: initialPosts }) => {
     const [searchTerm, setSearchTerm] = useState(searchParams.get('search') || '');
     const [currentSort, setCurrentSort] = useState('newest');
     const [currentSubCategory, setCurrentSubCategory] = useState('all');
-    // const [isModalOpen, setIsModalOpen] = useState(false);
-    // const [selectedPost, setSelectedPost] = useState(null);
 
     useEffect(() => {
-    const category = searchParams.get('category');
-
-    if (category) {
-        setCurrentSubCategory(category);
-    }
+        const category = searchParams.get('category') || 'all';
+        setCurrentSubCategory(prev => prev !== category ? category : prev);
     }, [searchParams]);
 
     const getPostBySubCategory = (currentSubCategory, posts) => currentSubCategory === 'all' ? posts : posts.filter(post => post.subCategory === currentSubCategory);
@@ -66,44 +61,6 @@ const Home = ({ posts: initialPosts }) => {
 
         return result;
     })(); 
-
-       
-    //modal function
-    // const openPost = async (slug) => {
-    //     const post = posts.find(post => post.slug === slug);
-    //     if (!post) {
-    //         return;
-    //     }
-
-    //     const stored = localStorage.getItem('view_posts');
-    //     const viewedPosts = JSON.parse(stored) || [];
-
-    //     const hasViewed = viewedPosts.includes(slug);
-    //     if(!hasViewed) {
-    //         const updatedPosts = posts.map(p => p.slug === slug ? { ...p, views: p.views + 1 } : p );
-
-    //         setPosts(updatedPosts);
-
-    //         const newViewedPosts = [...viewedPosts, slug];
-
-    //         localStorage.setItem('view_posts', JSON.stringify(newViewedPosts));
-            
-    //         const newViewsCount = post.views + 1;
-
-    //         await supabase
-    //         .from('posts')
-    //         .update({ views: newViewsCount })
-    //         .eq('slug', slug)
-    //     }
-
-    //     setSelectedPost(post);
-    //     setIsModalOpen(true);
-    // };
-
-    // const closePost = () => {
-    //     setIsModalOpen(false);
-    //     setSelectedPost(null);
-    // };
     
     //filter functions
     const handleSearch = (value) => {
@@ -116,18 +73,13 @@ const Home = ({ posts: initialPosts }) => {
     };
 
     const handleSubCategory = (subCategory) => {
-        setCurrentSubCategory(subCategory);
+        // setCurrentSubCategory(subCategory);
+        router.replace(subCategory === 'all' ? '/' : `/?category=${subCategory}`, {scroll: false})
+
     };
 
     return (
         <>
-            
-            {/* <PostModal
-                post={selectedPost}
-                isOpen={isModalOpen}
-                onClose={closePost}
-            /> */}
-             
             <Hero 
                 onSearch={handleSearch}
                 searchTerm={searchTerm}

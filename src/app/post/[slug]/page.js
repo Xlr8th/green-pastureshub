@@ -2,6 +2,7 @@ import { supabase } from "../../../lib/supabase";
 import PostViewTracker from "../PostViewTracker";
 import CommentSection from "../../../components/Comment/CommentSection";
 import './post.css'
+import BackButton from "../../../components/BackButton/BackButton";
 
 export async function generateMetadata({ params }) {
     const { slug } = await params
@@ -30,7 +31,7 @@ const page = async ({ params }) => {
     if (error || !post) {
         return <h1>Post not found</h1>
     }
-    const { title, author, category, publishedDate, readTime, views, thumbnail, content, tags } = post;
+    const { title, author, category, publishedDate, readTime, views, thumbnail, content, tags, subCategory } = post;
 
   const renderTags = () => (tags?.map(tag => (
         <span key={tag} className="post-view-tag">#{tag}</span>
@@ -52,9 +53,12 @@ const page = async ({ params }) => {
   return (
     <main className="page-post">
         <PostViewTracker post={post} />
+        
       
         <article className="post-page-container">
-            
+            <BackButton
+                category={subCategory}
+            />
                 
             <header className="post-view-header">
                 <span className={`post-view-category ${category}`}><i className="bi bi-journal-text "></i> {category}</span>
@@ -97,6 +101,7 @@ const page = async ({ params }) => {
                 
                        
         </article>
+        
       
     </main>
   )
