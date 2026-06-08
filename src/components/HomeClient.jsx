@@ -5,19 +5,19 @@ import Hero from "./Hero/Hero";
 import PostsGrid from "./PostCard/PostsGrid";
 import Welcome from "./Welcome/Welcome";
 import { useSearchParams } from 'next/navigation';
+import { useRouter } from "next/navigation";
 
 
 const Home = ({ posts: initialPosts }) => {
+    const searchParams = useSearchParams();
+    const router = useRouter();
     //states
     const [posts, setPosts] = useState(initialPosts)
-    const [searchTerm, setSearchTerm] = useState('');
+    const [searchTerm, setSearchTerm] = useState(searchParams.get('search') || '');
     const [currentSort, setCurrentSort] = useState('newest');
     const [currentSubCategory, setCurrentSubCategory] = useState('all');
     // const [isModalOpen, setIsModalOpen] = useState(false);
     // const [selectedPost, setSelectedPost] = useState(null);
-    
-
-    const searchParams = useSearchParams();
 
     useEffect(() => {
     const category = searchParams.get('category');
@@ -107,7 +107,8 @@ const Home = ({ posts: initialPosts }) => {
     
     //filter functions
     const handleSearch = (value) => {
-        setSearchTerm(value)
+        setSearchTerm(value);
+        router.replace(value.trim() ? `/?search=${value}` : '/');
     };
 
     const handleSort = (value) => {
