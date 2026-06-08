@@ -73,7 +73,7 @@ const Home = ({ posts: initialPosts }) => {
     };
 
     const handleSubCategory = (subCategory) => {
-        // setCurrentSubCategory(subCategory);
+        setCurrentSubCategory(subCategory);
         router.replace(subCategory === 'all' ? '/' : `/?category=${subCategory}`, {scroll: false})
 
     };
