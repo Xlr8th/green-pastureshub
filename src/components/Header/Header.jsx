@@ -93,6 +93,36 @@ const Header = () => {
               <li><Link href="/#about" onClick={closeMenu}>About</Link></li>
               <li><Link href="/#category" onClick={closeMenu}>Categories</Link></li>
               <li><Link href="/#subscribe" onClick={closeMenu}>Subscribe</Link></li>
+              <li>
+                {showHeaderSearch && (
+                <div className={`header-search ${
+                isSearchOpen ? 'active' : ''}`} ref={searchRef}>
+                  
+                                  
+                  <input
+                    type="text"
+                    className="search-input"
+                    placeholder="Search posts..."
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    onKeyDown={(e) => {
+                    if (e.key === 'Enter') {
+                      const term = searchTerm.trim();
+
+                      if (!term) return;
+                      closeMenu();
+                      router.push(
+                        `/?search=${encodeURIComponent(term)}`
+                      );
+                    }
+                    }}
+                  />
+                  <button className="search-btn" onClick={handleSearchClick}>
+                    <i className='bi bi-search' />
+                  </button>
+                </div>
+                )}
+              </li>
             </ul>
             <div className="header-actions">
               <div className="header-social-links">
@@ -108,33 +138,6 @@ const Header = () => {
               </div>
 
               <div className="search-auth-group">
-                {showHeaderSearch && (
-                <div className={`header-search ${
-                isSearchOpen ? 'active' : ''}`} ref={searchRef}>
-                <button className="search-btn" onClick={handleSearchClick}>
-                  <i className='bi bi-search' />
-                </button>
-                                
-                <input
-                  type="text"
-                  className="search-input"
-                  placeholder="Search posts..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  onKeyDown={(e) => {
-                  if (e.key === 'Enter') {
-                    const term = searchTerm.trim();
-
-                    if (!term) return;
-                    closeMenu();
-                    router.push(
-                      `/?search=${encodeURIComponent(term)}`
-                    );
-                  }
-                  }}
-                />
-              </div>
-              )}
 
                 <div className="header-auth">
                   {user ? (

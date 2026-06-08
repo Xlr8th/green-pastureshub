@@ -19,7 +19,6 @@ const Hero = ({ searchTerm, onSearch, searchResults }) => {
 
   const handleResultClick = (slug) => {
     router.push(`/post/${slug}`);
-    onSearch('');
   }
 
   useEffect(() => {
