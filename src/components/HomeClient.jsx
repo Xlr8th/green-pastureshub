@@ -130,6 +130,7 @@ const Home = ({ posts: initialPosts }) => {
             <Hero 
                 onSearch={handleSearch}
                 searchTerm={searchTerm}
+                searchResults={searchTerm.trim() ? filteredPosts : []}
             />
 
             <section id="about">

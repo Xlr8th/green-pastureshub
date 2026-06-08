@@ -1,8 +1,9 @@
 'use client'
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
+import { useRouter } from 'next/navigation';
 import './Hero.css';
 
-const Hero = ({ searchTerm, onSearch }) => {
+const Hero = ({ searchTerm, onSearch, searchResults }) => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [loaded, setLoaded] = useState(false);
 
@@ -13,14 +14,30 @@ const Hero = ({ searchTerm, onSearch }) => {
     'https://images.unsplash.com/photo-1470770903676-69b98201ea1c?w=1600',
   ];
 
+  const router = useRouter();
+  const searchRef = useRef(null);
+
+  const handleResultClick = (slug) => {
+    router.push(`/post/${slug}`);
+    onSearch('');
+  }
+
   useEffect(() => {
     const enterTimer = setTimeout(() => setLoaded(true), 80);
     const slideTimer = setInterval(() => {
       setCurrentSlide(prev => (prev + 1) % slides.length);
     }, 4000);
+
+    const handleClickOutside = (e) => {
+        if (searchRef.current && !searchRef.current.contains(e.target)) {
+            onSearch('')
+        }
+    }
+    document.addEventListener('mousedown', handleClickOutside)
     return () => {
       clearTimeout(enterTimer);
       clearInterval(slideTimer);
+      document.removeEventListener('mousedown', handleClickOutside);
     };
   }, []);
 
@@ -55,7 +72,7 @@ const Hero = ({ searchTerm, onSearch }) => {
 
         <p className="hero-subtitle">Where faith meets everyday living</p>
 
-        <div className="search-container" data-aos="fade-up">
+        <div className="search-container" data-aos="fade-up" ref={searchRef}>
           <input
             type="text"
             id="search-input"
@@ -63,7 +80,31 @@ const Hero = ({ searchTerm, onSearch }) => {
             placeholder="Search articles, books, videos..."
             onChange={(e) => onSearch(e.target.value)}
           />
-        </div>
+
+          {searchResults.length > 0 && (
+            <div className="search-dropdown">
+              {searchResults.map((post) => (
+                <div
+                  key={post.slug}
+                  className="search-result-item"
+                  onClick={() => handleResultClick(post.slug) }
+                >
+                  <div className="search-result-thumbnail">
+                    <img
+                      src={post.thumbnail}
+                      alt={post.title}
+                    />
+                  </div>
+
+                  <div className="search-result-content">
+                    <h4>{post.title}</h4>
+                    <p>{post.subCategory}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+        )}
+        </div>         
       </div>
 
       {/* Slide dots */}
