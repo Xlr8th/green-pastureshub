@@ -51,6 +51,8 @@ const page = async ({ params }) => {
     .eq('post_id', post.id)
     .order('created_at', { ascending: false });
 
+    const commentCount= initialComments?.length || 0;
+
   return (
     <main className="page-post">
         <PostViewTracker post={post} />
@@ -83,6 +85,9 @@ const page = async ({ params }) => {
                     <div className="post-view-meta-item">
                         <span><i className="bi bi-eye icon-faint"></i></span>
                         <span>{views.toLocaleString()} views</span>
+                    </div>
+                    <div className="post-view-meta-item">
+                        <span><i className="bi bi-chat icon-muted"></i> {commentCount} comment(s)</span>
                     </div>
                 </div>
             </header>

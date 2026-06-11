@@ -1,7 +1,7 @@
 import PostCard from './PostCard';
 import './PostCard.css'
 
-const PostsGrid = ({ posts, onViewPost, onAddToCart }) => {
+const PostsGrid = ({ posts }) => {
   return (
     <main className="main">
       <div className="container">
@@ -18,8 +18,6 @@ const PostsGrid = ({ posts, onViewPost, onAddToCart }) => {
               <PostCard
                 key={post.id}
                 {...post}
-                onViewPost={onViewPost}
-                onAddToCart={onAddToCart}
               />
             ))}
           </div>
