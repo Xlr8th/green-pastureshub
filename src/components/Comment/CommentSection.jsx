@@ -2,16 +2,91 @@
 import { useState } from "react";
 import Link from "next/link";
 import { AiOutlineLike, AiFillLike } from 'react-icons/ai';
-import { FaTrashAlt } from 'react-icons/fa';
+import { FaChevronDown, FaChevronUp, FaTrashAlt, FaReply } from 'react-icons/fa';
 import { useAuth } from "../../lib/AuthContext";
 import { supabase } from "../../lib/supabase";
 import './CommentSection.css'
 import { useRouter } from "next/navigation";
 
 
-const CommentThread = ({ comment, user, toggleLike, handleDelete }) => {
+// _____helpers_______
+
+/*
+ Checks whether the logged-in user is the site admin.
+ put your Supabase user UUID in .env.local:
+    NEXT_PUBLIC_ADMIN_USER_ID=your-uuid-here
+    Then the check below works out of the box with no DB change.
+*/
+
+const ADMIN_USER_ID = process.env.NEXT_PUBLIC_ADMIN_USER_ID;
+
+const isAdmin = (user) => Boolean(user && user.id === ADMIN_USER_ID);
+
+const buildTree = (flat, userId) => {
+  const map = {};
+  const roots = [];
+
+  // First pass — index every comment
+  flat.forEach((comment) => {
+    map[comment.id] = {
+      ...comment,
+      likes: comment.comment_likes?.length || 0,
+      liked: comment.comment_likes?.some((like) => like.user_id === userId) || false,
+      replies: [],
+    };
+  });
+
+  // Second pass — wire up parent → child
+  flat.forEach((comment) => {
+    if (comment.parent_id && map[comment.parent_id]) {
+      map[comment.parent_id].replies.push(map[comment.id]);
+    } else {
+      roots.push(map[comment.id]);
+    }
+  });
+
+  return roots;
+};
+
+const formatDate = (ts) => new Date(ts).toLocaleString('en-US', {dateStyle: 'medium', timeStyle: 'short'});
+
+
+const CommentThread = ({slug, comment, user, toggleLike, handleDelete, handleReply, replyingTo, setReplyingTo, depth = 0 }) => {
+  const [replyText, setReplyText] = useState('');
+  const [repliesOpen, setRepliesOpen] = useState(true);
+  const [posting, setPosting] = useState(false);
+
+  const router = useRouter();
+  const admin = isAdmin(user);
+  const canDelete = user?.id === comment.user_id || admin;
+  const hasReplies = comment.replies?.length > 0;
+
+  const submitReply = async () => {
+    if (!replyText.trim()) return;
+    setPosting(true);
+    await handleReply(comment.id, replyText.trim());
+    setReplyText('');
+    setReplyingTo(null);
+    setPosting(false);
+    setRepliesOpen(true); // expand so new reply is vidible
+
+  };
+
+  const onReplyClick = () => {
+    if (!user) {
+      router.push(`/login?redirect=/post/${slug}`);
+      return;
+    }
+    if (replyingTo === comment.id) {
+      setReplyingTo(null);
+    }
+    else {
+      setReplyingTo(comment.id);
+    }
+  };
+
   return (
-    <div className="comment-thread">
+    <div className={`comment-thread ${depth > 0 ? "comment-thread-reply" : ""}`}>
 
       <div className="comment-box">
 
@@ -26,12 +101,14 @@ const CommentThread = ({ comment, user, toggleLike, handleDelete }) => {
 
         <div className="comment-content">
           <div className="comment-header">
-            <h4>{comment.profiles?.display_name || "Anonymous"}</h4>
+            <h4>
+              {comment.profiles?.display_name || "Anonymous"}
+              {admin && user?.id === comment.user_id && (
+                <span className="admin-badge">Admin</span>
+              )}
+            </h4>
             <span className="time">
-              {new Date(comment.created_at).toLocaleString("en-US", {
-                dateStyle: "medium",
-                timeStyle: "short",
-              })}
+              {formatDate(comment.created_at)}
             </span>
           </div>
 
@@ -39,8 +116,9 @@ const CommentThread = ({ comment, user, toggleLike, handleDelete }) => {
             <p>{comment.content}</p>
           </div>
 
-          {/* Like & Delete Buttons */}
+          {/* Actions */}
           <div className="comment-actions">
+            {/* Like */}
             <button
               type="button"
               className={`like-btn ${comment.liked ? "liked" : ""}`}
@@ -50,39 +128,149 @@ const CommentThread = ({ comment, user, toggleLike, handleDelete }) => {
             </button>
             <span className="like-count">{comment.likes}</span>
 
-            {/* Show delete button only for comment owner */}
-            {user?.id === comment.user_id && (
+            {/* Reply — only on root comments to keep nesting shallow */}
+            {depth === 0 && (
               <button
                 type="button"
-                className="delete-btn"
+                className={`reply-btn ${replyingTo === comment.id ? "active" : ""}`}
+                onClick={onReplyClick}
+                aria-label="Reply"
+              >
+                <FaReply /> <span>Reply</span>
+              </button>
+            )}
+
+            {/* Show delete button for comment owner and admin */}
+            {canDelete && (
+              <button
+                type="button"
+                className={`delete-btn ${admin && user?.id !== comment.user_id ? 'delete-btn-admin' : ''}`}
                 onClick={() => handleDelete(comment.id)}
+                aria-label="Delete"
               >
                 <FaTrashAlt />
               </button>
             )}
           </div>
+          {/* Inline reply form */}
+          {replyingTo === comment.id && (
+            <div className="reply_form">
+              <textarea
+              value={replyText}
+              onChange={(e) => setReplyText(e.target.value)}
+              placeholder={`Replying to ${comment.profiles?.display_name || 'Anonymous'}...`}
+              rows={3}
+              autoFocus
+              />
+              <div className="reply-form-actions">
+                <button
+                  type="button"
+                  className="btn-submit btn-submit-sm"
+                  onClick={submitReply}
+                  disabled={posting || !replyText.trim()}
+                >
+                  {posting ? 'Posting...' : 'Post Reply'}
+                </button>
+                <button
+                  type="button"
+                  className="btn-cancel"
+                  onClick={() => { setReplyingTo(null); setReplyText(''); }}
+                >
+                  Cancel
+                </button>
+              </div>
+            </div>
+          )}
         </div>
       </div>
 
-      
+      {/* Nested replies */}
+      {hasReplies && (
+        <div className="replies-wrapper">
+          <button
+            type="button"
+            className="toggle-replies-btn"
+            onClick={() => setRepliesOpen((open) => !open)}
+          >
+            {repliesOpen ? <FaChevronUp /> : <FaChevronDown />}
+            {repliesOpen ? 'Hide' : 'Show'}
+            {comment.replies.length}
+            {comment.replies.length === 1 ? 'reply' : 'replies'}
+          </button>
+
+          {repliesOpen && (
+            <div className="replies-list">
+              {comment.replies.map((reply) => (
+                <CommentThread 
+                  key={reply.id}
+                  comment={reply}
+                  user={user}
+                  slug={slug}
+                  toggleLike={toggleLike}
+                  handleDelete={handleDelete}
+                  handleReply={handleReply}
+                  depth={depth + 1}
+                  replyingTo={replyingTo}
+                  setReplyingTo={setReplyingTo}
+                />
+              ))}
+            </div>
+          )}
+        </div>
+      )}      
     </div>
-  )
-}
+  );
+};
 
 
 const CommentSection = ({ postId, initialComments, slug }) => {
     const { user } = useAuth();
     const router = useRouter();
 
-    const [comments, setComments] = useState(
-    (initialComments || []).map(comment => ({
-        ...comment,
-        likes: comment.comment_likes?.length || 0,
-        liked: comment.comment_likes?.some(like => like.user_id === user?.id) || false
-    }))
-    )
+    const [commentTree, setCommentTree] = useState(() => buildTree(initialComments, user?.id))
     const [newComment, setNewComment] = useState("");
     const [loading, setLoading] = useState(false);
+    const [replyingTo, setReplyingTo] = useState(null)
+
+
+    // ____Helpers_____________________________
+
+    //  Recursively update a single comment in the tree
+    const updateNodeInTree = (nodes, commentId, updater) =>
+    nodes.map((n) => {
+      // DOOR CHECK — is this the comment we're looking for?
+      if (n.id === commentId) {
+        return updater(n)  // found it — apply the update and return
+      }
+      // FLOOR CHECK — does this comment have replies (a next floor)?
+      if (n.replies?.length) {
+        return { 
+          ...n,  // keep everything about this comment the same
+          replies: updateNodeInTree(n.replies, commentId, updater) // go deeper
+        }
+      }
+      // DEAD END — not the target, no replies — return unchanged
+      return n
+    });
+
+    const removeNodeFromTree = (nodes, commentId) =>
+    nodes.filter((n) => n.id !== commentId)  // remove if this is the target
+      .map((n) => ({
+        ...n,
+        replies: n.replies?.length ? removeNodeFromTree(n.replies, commentId) : [],  // go deeper into survivors
+      }))
+
+    // append a reply under its parent in the tree
+    const appendReplyInTree = (nodes, parentId, newReply) =>
+    nodes.map((n) => {
+      if (n.id === parentId) {
+        return { ...n, replies: [...(n.replies || []), newReply] }
+      }
+      if (n.replies?.length) {
+        return { ...n, replies: appendReplyInTree(n.replies, parentId, newReply) }
+      }
+      return n
+    })
 
     //post comment
     const handleSubmit = async (e) => {
@@ -115,6 +303,7 @@ const CommentSection = ({ postId, initialComments, slug }) => {
                 content,
                 created_at,
                 user_id,
+                parent_id,
                 profiles (display_name)
               `)
               .eq("id", data[0].id)
@@ -124,7 +313,7 @@ const CommentSection = ({ postId, initialComments, slug }) => {
             throw fetchError;
           }
 
-          setComments((prev) => [{...fullComment, likes: 0, liked: false }, ...prev]);
+          setCommentTree((prev) => [{...fullComment, likes: 0, liked: false, replies:[] }, ...prev]);
 
           setNewComment("");
       } 
@@ -135,6 +324,55 @@ const CommentSection = ({ postId, initialComments, slug }) => {
         setLoading(false);
       }
     };
+
+    // ------ Post a reply --------
+    const handleReply = async (parentId, replyText) => {
+      if (!replyText.trim()) return;
+
+      const freshReply = {
+        post_id: postId,
+        user_id: user.id,
+        content: replyText,
+        parent_id: parentId
+      }
+      setLoading(true)
+
+      try {
+        const { data, error } = await supabase
+        .from('comments')
+        .insert(freshReply)
+        .select();
+
+        if(error) throw error;
+
+        const { data: fullReply, error: fetchError } = await supabase
+        .from('comments')
+        .select(`
+          id,
+          content,
+          created_at,
+          user_id,
+          parent_id,
+          profiles (display_name)
+        `)
+        .eq('id', data[0].id)
+        .single();
+
+        if (fetchError) throw fetchError;
+
+        const node = { ...fullReply, likes: 0, liked: false, replies: [] };
+
+        setCommentTree((prev) => appendReplyInTree(prev, parentId, node));
+
+        } 
+        catch (err) {
+          console.error("Error posting reply:", err.message);
+        }
+        finally {
+          setLoading(false);
+        }
+    };      
+
     // toggle like 
     const toggleLike = async (commentId) => {
       if (!user) {
@@ -155,23 +393,25 @@ const CommentSection = ({ postId, initialComments, slug }) => {
           .delete()
           .eq('id', existing.id)
 
-          setComments(prev => prev.map(comment => {
-          if (comment.id !== commentId) return comment
-          return {
-            ...comment,
+          setCommentTree( prev => updateNodeInTree(prev, commentId, (n) => ({
+            ...n,
             liked: false,
-            likes:  comment.likes - 1
-          }
-          }))
+            likes: n.likes - 1,
+          })));
+
         }
         else {
           await supabase
           .from('comment_likes')
           .insert({ comment_id: commentId, user_id: user.id})
 
-          setComments(prev => prev.map(comment => comment.id !== commentId ? comment : {
-            ...comment, liked:true, likes: comment.likes + 1
+          setCommentTree((prev) =>
+          updateNodeInTree(prev, commentId, (n) => ({
+            ...n,
+            liked: true,
+            likes: n.likes + 1,
           }))
+        );
         }
       }
       catch (error) {
@@ -196,15 +436,21 @@ const CommentSection = ({ postId, initialComments, slug }) => {
           throw error;
         }
 
-        setComments(prev => prev.filter(c => c.id !== commentId))
+        setCommentTree((prev) => removeNodeFromTree(prev, commentId));
       }
       catch (error) {
-        console.error('Something went wrong', error.message)
+        console.error('Error deleting comment', error.message)
       }
       finally {
         setLoading(false)
       }
-  };
+    };
+  // ── Count all comments (including replies) for the header ─────────────────
+
+  const countAll = (nodes) =>
+    nodes.reduce((sum, n) => sum + 1 + countAll(n.replies || []), 0);
+
+  const totalCount = countAll(commentTree);
 
   return (
     <section>
@@ -245,20 +491,27 @@ const CommentSection = ({ postId, initialComments, slug }) => {
         }
 
         <div className="comment-section">
-          <h2 className="comments-header">{comments.length} Comment(s)</h2>
+          <h2 className="comments-header">
+            {totalCount} {totalCount <= 1 ? "Comment" : "Comments"}
+          </h2>
           <div className="comment-container">
 
-            { comments.length === 0 ? (
+            { commentTree.length === 0 ? (
               <p> No comment yet. Be the first to comment!</p>
             ) : (
               <div>
-                {comments.map(comment => (
+                {commentTree.map(comment => (
                   <CommentThread 
                     key={comment.id}
                     comment={comment}
                     user={user}
+                    slug={slug}
                     toggleLike={toggleLike}
                     handleDelete={handleDelete}
+                    handleReply={handleReply}
+                    replyingTo={replyingTo}
+                    setReplyingTo={setReplyingTo}
+                    depth={0}
                   />
                 ))}
               </div>

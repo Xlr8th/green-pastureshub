@@ -19,7 +19,7 @@ const FilterBar = ({ currentSubCategory, onSubCategory, currentSort, onSort }) =
     { subCategory:'relationships', subLabel: 'Relationships' },
     { subCategory: 'lifestyle', subLabel: 'Lifestyle' },
     { subCategory: 'covenant thought', subLabel: 'Covenant thought'},
-    { subCategory: 'ChitChat', subLabel: 'ChitChat'}
+    { subCategory: 'chitchat', subLabel: 'ChitChat'}
   ];
 
   return (

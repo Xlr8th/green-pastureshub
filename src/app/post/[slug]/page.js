@@ -10,7 +10,7 @@ export async function generateMetadata({ params }) {
     const { data: post } = await supabase
     .from('posts')
     .select('title, excerpt')
-    .eq('slug', params)
+    .eq('slug', slug)
     .single()
 
     return {
@@ -44,11 +44,12 @@ const page = async ({ params }) => {
         content,
         created_at,
         user_id,
+        parent_id,
         profiles (display_name),
-        comment_likes (id, user_id)
+        comment_likes (id, user_id),
     `)
     .eq('post_id', post.id)
-    .order('created_at', { ascending: false })
+    .order('created_at', { ascending: false });
 
   return (
     <main className="page-post">

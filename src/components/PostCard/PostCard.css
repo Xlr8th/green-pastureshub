@@ -112,6 +112,13 @@
     color: var(--text-secondary);
 }
 
+.post-stats {
+    display: flex;
+    gap: 1rem;
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+}
+
 .read-more-btn {
     background: var(--primary);
     color: white;

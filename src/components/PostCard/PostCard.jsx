@@ -4,7 +4,7 @@ import Link from 'next/link';
 
 const PostCard = ({
     id, title, slug, author, category, subCategory,
-    excerpt, thumbnail, publishedDate, readTime, views, featured
+    excerpt, thumbnail, publishedDate, readTime, views, featured, commentCount
   }) => {
 
   return (
@@ -52,6 +52,7 @@ const PostCard = ({
                             <div className="post-stats">
                                 <span><i className="bi bi-clock icon-muted"></i> {readTime} min</span>
                                 <span><i className="bi bi-eye icon-faint"></i> {views}</span>
+                                <span><i className="bi bi-chat icon-muted"></i> {commentCount}</span>
                             </div>
                         </div>
                     )}
