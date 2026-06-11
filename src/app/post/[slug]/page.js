@@ -46,7 +46,7 @@ const page = async ({ params }) => {
         user_id,
         parent_id,
         profiles (display_name),
-        comment_likes (id, user_id),
+        comment_likes (id, user_id)
     `)
     .eq('post_id', post.id)
     .order('created_at', { ascending: false });

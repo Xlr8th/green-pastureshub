@@ -1,5 +1,5 @@
 'use client'
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { AiOutlineLike, AiFillLike } from 'react-icons/ai';
 import { FaChevronDown, FaChevronUp, FaTrashAlt, FaReply } from 'react-icons/fa';
@@ -103,7 +103,7 @@ const CommentThread = ({slug, comment, user, toggleLike, handleDelete, handleRep
           <div className="comment-header">
             <h4>
               {comment.profiles?.display_name || "Anonymous"}
-              {admin && user?.id === comment.user_id && (
+              {comment.user_id === ADMIN_USER_ID && (
                 <span className="admin-badge">Admin</span>
               )}
             </h4>
@@ -227,10 +227,14 @@ const CommentSection = ({ postId, initialComments, slug }) => {
     const { user } = useAuth();
     const router = useRouter();
 
-    const [commentTree, setCommentTree] = useState(() => buildTree(initialComments, user?.id))
+    const [commentTree, setCommentTree] = useState([]);
     const [newComment, setNewComment] = useState("");
     const [loading, setLoading] = useState(false);
-    const [replyingTo, setReplyingTo] = useState(null)
+    const [replyingTo, setReplyingTo] = useState(null);
+
+    useEffect(() => {
+      setCommentTree(buildTree(initialComments, user?.id));
+    }, [initialComments, user?.id]);
 
 
     // ____Helpers_____________________________
@@ -386,6 +390,8 @@ const CommentSection = ({ postId, initialComments, slug }) => {
         .eq('comment_id', commentId)
         .eq('user_id', user.id)
         .maybeSingle()
+
+        if (error) throw error;
 
         if (existing) {
           await supabase
