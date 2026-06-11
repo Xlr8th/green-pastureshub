@@ -148,8 +148,8 @@
 }
 
 .avatar-wrapper img {
-    width: 60px;
-    height: 60px;
+    width: 58px;
+    height: 58px;
     border-radius: 50%;
     object-fit: cover;
     flex-shrink: 0;
@@ -159,7 +159,7 @@
     width: 100%;
     background: var(--bg-card);
     border: 1px solid var(--border);
-    border-radius: 16px;
+    border-radius: 20px;
     padding: 20px;
     box-shadow: var(--shadow-sm);
     transition: all 0.25s ease;
@@ -268,10 +268,13 @@
     border: 1px solid transparent;
     background: transparent;
     color: var(--text-secondary);
-    font-size: 0.85rem;
-    font-weight: 500;
+    font-weight: 600;
     cursor: pointer;
     transition: all 0.2s ease;
+}
+
+.reply-btn > span {
+    font-size: 0.85rem;
 }
 
 .reply-btn:hover {
@@ -395,7 +398,8 @@
     display: flex;
     flex-direction: column;
     gap: 12px;
-    padding-left: 16px;
+    padding-left: 24px;
+    margin-top: 6px;
     border-left: 2px solid var(--border);
 }
 

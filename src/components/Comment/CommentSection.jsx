@@ -193,9 +193,9 @@ const CommentThread = ({slug, comment, user, toggleLike, handleDelete, handleRep
             onClick={() => setRepliesOpen((open) => !open)}
           >
             {repliesOpen ? <FaChevronUp /> : <FaChevronDown />}
-            {repliesOpen ? 'Hide' : 'Show'}
+            {repliesOpen ? 'Hide ' : 'Show '}
             {comment.replies.length}
-            {comment.replies.length === 1 ? 'reply' : 'replies'}
+            {comment.replies.length === 1 ? ' reply' : ' replies'}
           </button>
 
           {repliesOpen && (
@@ -384,7 +384,7 @@ const CommentSection = ({ postId, initialComments, slug }) => {
         return;
       }
       try {
-        const { data: existing } = await supabase
+        const { data: existing, error } = await supabase
         .from('comment_likes')
         .select('id')
         .eq('comment_id', commentId)
