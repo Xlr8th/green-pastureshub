@@ -24,7 +24,7 @@ const NotificationBell = ({ user, instanceId = 'default' }) => {
         const fetchNotifications = async () => {
             const { data, error } = await supabase
                 .from('notifications')
-                .select('id, type, post_id, created_at, read, posts(slug)')
+                .select('id, type, post_id, created_at, read, posts(slug, title)')
                 .eq('user_id', user.id)
                 .eq('read', false)
                 .order('created_at', { ascending: false })
@@ -65,37 +65,19 @@ const NotificationBell = ({ user, instanceId = 'default' }) => {
         }
     }, [user?.id, instanceId])
 
-    const markAllRead = async () => {
-        if (!notifications.length) return
-
-        const ids = notifications.map(n => n.id)
-
-        const { error } = await supabase
+    const markOneRead = async (notificationId) => {
+        await supabase
             .from('notifications')
             .update({ read: true })
-            .in('id', ids)
+            .eq('id', notificationId)
             .eq('user_id', user.id)
-            .eq('read', false)
 
-        if (!error) {
-            setNotifications([])
-        }
+        setNotifications(prev => prev.filter(n => n.id !== notificationId))
     }
 
     const handleOpen = () => {
         setIsOpen(prev => !prev)
-        if (!isOpen && notifications.length > 0) {
-            markAllRead()
-        }
     }
-
-    const getNotificationText = (type) => {
-        if (type === 'new_comment') return 'Someone commented on a post'
-        if (type === 'new_reply') return 'Someone replied to your comment'
-        return 'New notification'
-    }
-
-
 
     return (
         <div className="notification-bell" ref={dropdownRef}>
@@ -126,11 +108,17 @@ const NotificationBell = ({ user, instanceId = 'default' }) => {
                                     key={notification.id}
                                     className="notification-item"
                                     onClick={() => {
+                                        markOneRead(notification.id)
                                         router.push(`/post/${notification.posts?.slug}`)
                                         setIsOpen(false)
                                     }}
                                 >
-                                    <p>{getNotificationText(notification.type)}</p>
+                                    <div>
+                                        <span>
+                                            {notification.profiles?.display_name || 'Someone'}
+                                            {notification.type === 'new_comment' ? ' commented on ' : ' replied to your comment on '}</span>
+                                        <strong>{notification.posts?.title || 'a post'}</strong>
+                                    </div>
                                     <span className="notification-time">
                                         {new Date(notification.created_at).toLocaleString('en-US', {
                                             dateStyle: 'medium',

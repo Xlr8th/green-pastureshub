@@ -1,5 +1,7 @@
 import { supabase } from './supabase'
 
+
+
 export const createNotifications = async ({
     commenterUserId,
     postId,
@@ -7,6 +9,7 @@ export const createNotifications = async ({
     type,
     parentCommentOwnerId = null
 }) => {
+    console.log('createNotifications called with:', { commenterUserId, postId, commentId, type, parentCommentOwnerId })
     try {
         // 1. Check if commenter is admin — if yes, skip
         const { data: commenterProfile } = await supabase
@@ -15,8 +18,6 @@ export const createNotifications = async ({
             .eq('id', commenterUserId)
             .single()
 
-        if (commenterProfile?.role === 'admin') return
-
         // 2. Fetch all admin IDs
         const { data: admins } = await supabase
             .from('profiles')
@@ -24,7 +25,12 @@ export const createNotifications = async ({
             .eq('role', 'admin')
 
         // 3. Build notifications array for admins
-        const notifications = (admins || []).map(admin => ({
+        const notifications = [];
+        const commenterIsAdmin = commenterProfile?.role === 'admin';
+
+        // Only notify admins if commenter is NOT an admin
+        if (!commenterIsAdmin) {
+        const adminNotifications = (admins || []).map(admin => ({
             user_id: admin.id,
             triggered_by: commenterUserId,
             post_id: postId,
@@ -32,6 +38,8 @@ export const createNotifications = async ({
             type: type,
             read: false
         }))
+        notifications.push(...adminNotifications)
+        }
 
         // 4. For replies — add root comment owner if eligible
         if (type === 'new_reply' && parentCommentOwnerId) {
@@ -51,7 +59,9 @@ export const createNotifications = async ({
         }
 
         // 5. Insert all notifications
-        await supabase.from('notifications').insert(notifications)
+        if (notifications.length > 0) {
+            await supabase.from('notifications').insert(notifications)
+        }
 
     } catch (err) {
         console.error('Error creating notifications:', err.message)

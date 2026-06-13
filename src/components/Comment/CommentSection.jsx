@@ -63,9 +63,10 @@ const CommentThread = ({slug, comment, user, toggleLike, handleDelete, handleRep
   const hasReplies = comment.replies?.length > 0;
 
   const submitReply = async () => {
+    console.log('submitReply called', comment.id, comment.user_id)
     if (!replyText.trim()) return;
     setPosting(true);
-    await handleReply(comment.id, replyText.trim(), comment.user_Id);
+    await handleReply(comment.id, replyText.trim(), comment.user_id);
     setReplyText('');
     setReplyingTo(null);
     setPosting(false);
@@ -376,12 +377,20 @@ const CommentSection = ({ postId, initialComments, slug }) => {
 
         setCommentTree((prev) => appendReplyInTree(prev, parentId, node));
 
+        console.log('createNotifications params:', {
+            commenterUserId: user.id,
+            postId,
+            commentId: data[0].id,
+            type: 'new_reply',
+            parentCommentOwnerId
+        })
+
         await createNotifications({
             commenterUserId: user.id,
             postId,
             commentId: data[0].id,
             type: 'new_reply',
-            parentCommentOwnerId: parentCommentOwnerId
+            parentCommentOwnerId
         })
 
         }
