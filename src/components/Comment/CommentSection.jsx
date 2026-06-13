@@ -7,6 +7,7 @@ import { useAuth } from "../../lib/AuthContext";
 import { supabase } from "../../lib/supabase";
 import './CommentSection.css'
 import { useRouter } from "next/navigation";
+import { createNotifications } from "../../lib/notification";
 
 
 // _____helpers_______
@@ -64,7 +65,7 @@ const CommentThread = ({slug, comment, user, toggleLike, handleDelete, handleRep
   const submitReply = async () => {
     if (!replyText.trim()) return;
     setPosting(true);
-    await handleReply(comment.id, replyText.trim());
+    await handleReply(comment.id, replyText.trim(), comment.user_Id);
     setReplyText('');
     setReplyingTo(null);
     setPosting(false);
@@ -320,6 +321,12 @@ const CommentSection = ({ postId, initialComments, slug }) => {
           setCommentTree((prev) => [{...fullComment, likes: 0, liked: false, replies:[] }, ...prev]);
 
           setNewComment("");
+          await createNotifications({
+            commenterUserId: user.id,
+            postId,
+            commentId: data[0].id,
+            type: 'new_comment'
+          })
       } 
       catch (error) {
         console.error("Error posting comment:", error.message);
@@ -327,10 +334,11 @@ const CommentSection = ({ postId, initialComments, slug }) => {
       finally {
         setLoading(false);
       }
+      
     };
 
     // ------ Post a reply --------
-    const handleReply = async (parentId, replyText) => {
+    const handleReply = async (parentId, replyText, parentCommentOwnerId) => {
       if (!replyText.trim()) return;
 
       const freshReply = {
@@ -368,7 +376,15 @@ const CommentSection = ({ postId, initialComments, slug }) => {
 
         setCommentTree((prev) => appendReplyInTree(prev, parentId, node));
 
-        } 
+        await createNotifications({
+            commenterUserId: user.id,
+            postId,
+            commentId: data[0].id,
+            type: 'new_reply',
+            parentCommentOwnerId: parentCommentOwnerId
+        })
+
+        }
         catch (err) {
           console.error("Error posting reply:", err.message);
         }

@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useRouter, usePathname } from 'next/navigation';
 import { useAuth } from '../../lib/AuthContext';
 import { supabase } from '../../lib/supabase';
+import NotificationBell from '../Notifications/NotificationBell';
 
 const Header = () => {
   const router = useRouter();
@@ -73,8 +74,13 @@ const Header = () => {
               <img src='/image/logo.png' alt="Green Pastures logo" />
             </Link>
           </div>
-
-          {/* Hamburger sits OUTSIDE nav so it always shows on mobile */}
+          <div className="bell-group">
+           {user && (
+            <div className="mobile-bell">
+              <NotificationBell user={user} instanceId="mobile" />
+            </div>
+          )}
+           {/* Hamburger sits OUTSIDE nav so it always shows on mobile */}
           <button
             className={`hamburger ${isOpen ? 'hamburger-open' : ''}`}
             onClick={onToggle}
@@ -85,6 +91,9 @@ const Header = () => {
             <span></span>
             <span></span>
           </button>
+          </div>
+          
+          
 
           {/* nav gets the 'nav-open' class when isOpen is true */}
           <nav className={`nav ${isOpen ? 'nav-open' : ''}`}>
@@ -124,6 +133,11 @@ const Header = () => {
                 )}
               </li>
             </ul>
+            {user && (
+              <div className="desktop-bell">
+                <NotificationBell user={user} instanceId="desktop" />
+              </div>
+            )}
             <div className="header-actions">
               <div className="header-social-links">
                 <a href="https://x.com/edith_oise" className="twitter link" aria-label="Twitter">

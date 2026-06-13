@@ -1,0 +1,144 @@
+.notification-bell {
+    position: relative;
+}
+
+/* Bell button */
+.bell-btn {
+    position: relative;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: var(--text-primary);
+    font-size: 1.2rem;
+    padding: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: background 0.2s ease, color 0.2s ease;
+}
+
+.bell-btn:hover {
+    background: var(--bg-secondary);
+    color: var(--primary);
+}
+
+/* Unread badge */
+.bell-badge {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    background: var(--danger);
+    color: #fff;
+    font-size: 0.65rem;
+    font-weight: 700;
+    min-width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 3px;
+    line-height: 1;
+}
+
+/* Dropdown */
+.notification-dropdown {
+    position: absolute;
+    top: calc(100% + 10px);
+    right: 0;
+    width: 300px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-lg);
+    z-index: 1000;
+    overflow: hidden;
+}
+
+/* Dropdown header */
+.notification-header {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border);
+    background: var(--bg-secondary);
+}
+
+.notification-header h4 {
+    margin: 0;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+/* Empty state */
+.notification-empty {
+    padding: 20px 16px;
+    text-align: center;
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+    margin: 0;
+}
+
+/* Notification list */
+.notification-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    max-height: 320px;
+    overflow-y: auto;
+}
+
+/* Individual notification */
+.notification-item {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border);
+    cursor: pointer;
+    transition: background 0.15s ease;
+}
+
+.notification-item:last-child {
+    border-bottom: none;
+}
+
+.notification-item:hover {
+    background: var(--bg-secondary);
+}
+
+.notification-item p {
+    margin: 0 0 4px 0;
+    font-size: 0.875rem;
+    color: var(--text-primary);
+    font-weight: 500;
+}
+
+.notification-time {
+    font-size: 0.75rem;
+    color: var(--text-light);
+}
+
+/* Bell outside nav — mobile only */
+
+.bell-group {
+    display: flex;
+}
+
+.mobile-bell {
+    display: flex;
+    align-items: center;
+    margin-right: 5px;
+
+}
+
+/* Bell inside nav — desktop only */
+.desktop-bell {
+    display: none;
+}
+
+@media (min-width: 992px) {
+    .mobile-bell {
+        display: none;
+    }
+    .desktop-bell {
+        display: flex;
+    }
+}
