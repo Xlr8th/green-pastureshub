@@ -12,16 +12,6 @@ import { createNotifications } from "../../lib/notification";
 
 // _____helpers_______
 
-/*
- Checks whether the logged-in user is the site admin.
- put your Supabase user UUID in .env.local:
-    NEXT_PUBLIC_ADMIN_USER_ID=your-uuid-here
-    Then the check below works out of the box with no DB change.
-*/
-
-const ADMIN_USER_ID = process.env.NEXT_PUBLIC_ADMIN_USER_ID;
-
-const isAdmin = (user) => Boolean(user && user.id === ADMIN_USER_ID);
 
 const buildTree = (flat, userId) => {
   const map = {};
@@ -53,12 +43,13 @@ const formatDate = (ts) => new Date(ts).toLocaleString('en-US', {dateStyle: 'med
 
 
 const CommentThread = ({slug, comment, user, toggleLike, handleDelete, handleReply, replyingTo, setReplyingTo, depth = 0 }) => {
+  const { isAdmin } = useAuth()
+  const admin = isAdmin
   const [replyText, setReplyText] = useState('');
   const [repliesOpen, setRepliesOpen] = useState(true);
   const [posting, setPosting] = useState(false);
 
   const router = useRouter();
-  const admin = isAdmin(user);
   const canDelete = user?.id === comment.user_id || admin;
   const hasReplies = comment.replies?.length > 0;
 
@@ -105,7 +96,7 @@ const CommentThread = ({slug, comment, user, toggleLike, handleDelete, handleRep
           <div className="comment-header">
             <h4>
               {comment.profiles?.display_name || "Anonymous"}
-              {comment.user_id === ADMIN_USER_ID && (
+              {comment.profiles?.role === 'admin' && (
                 <span className="admin-badge">Admin</span>
               )}
             </h4>

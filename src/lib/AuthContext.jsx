@@ -7,24 +7,43 @@ const AuthContext = createContext(null)
 // 2. Build the provider (the thing that puts items ON the shelf)
 export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
+    const [isAdmin, setIsAdmin] = useState(false);
+
+    const fetchRole = async (userId) => {
+        if (!userId) {
+            setIsAdmin(false)
+            return
+        }
+        const { data } = await supabase
+            .from('profiles')
+            .select('role')
+            .eq('id', userId)
+            .single()
+
+        setIsAdmin(data?.role === 'admin')
+    }
 
     useEffect(() => {
         const getCurrentSession = async () => {
             const { data } = await supabase.auth.getSession();
-            setUser(data.session?.user ?? null)
+            const currentUser = data.session?.user ?? null
+            setUser(currentUser)
+            fetchRole(currentUser?.id)
         };
 
         getCurrentSession();
 
         const { data } = supabase.auth.onAuthStateChange((event, session) => {
-            setUser(session?.user ?? null);
+            const currentUser = session?.user ?? null;
+            setUser(currentUser);
+            fetchRole(currentUser?.id);
         })
         return () => data.subscription.unsubscribe();
     }, [])
     
 
     return (
-        <AuthContext.Provider value={{ user, setUser }}>
+        <AuthContext.Provider value={{ user, setUser, isAdmin }}>
             {children}
         </AuthContext.Provider>
     )

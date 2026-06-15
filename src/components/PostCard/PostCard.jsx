@@ -1,11 +1,13 @@
 'use client'
 import './PostCard.css'
 import Link from 'next/link';
+import { useAuth } from '../../lib/AuthContext';
 
 const PostCard = ({
     id, title, slug, author, category, subCategory,
     excerpt, thumbnail, publishedDate, readTime, views, featured, commentCount
   }) => {
+    const { isAdmin } = useAuth()
 
   return (
         <Link href={`/post/${slug}`} style={{ textDecoration: 'none',
@@ -51,7 +53,7 @@ const PostCard = ({
                         <div className="post-footer">
                             <div className="post-stats">
                                 <span><i className="bi bi-clock icon-muted"></i> {readTime} min</span>
-                                <span><i className="bi bi-eye icon-faint"></i> {views}</span>
+                                {isAdmin && (<span><i className="bi bi-eye icon-faint"></i> {views}</span>)}
                                 <span><i className="bi bi-chat icon-muted"></i> {commentCount}</span>
                             </div>
                         </div>

@@ -3,6 +3,7 @@ import PostViewTracker from "../PostViewTracker";
 import CommentSection from "../../../components/Comment/CommentSection";
 import './post.css'
 import BackButton from "../../../components/BackButton/BackButton";
+import AdminViews from "../../../components/AdminViews";
 
 export async function generateMetadata({ params }) {
     const { slug } = await params
@@ -45,7 +46,7 @@ const page = async ({ params }) => {
         created_at,
         user_id,
         parent_id,
-        profiles (display_name),
+        profiles (display_name, role),
         comment_likes (id, user_id)
     `)
     .eq('post_id', post.id)
@@ -82,10 +83,7 @@ const page = async ({ params }) => {
                         <span><i className="bi bi-clock icon-muted"></i></span>
                         <span>{readTime} min read</span>
                     </div>
-                    <div className="post-view-meta-item">
-                        <span><i className="bi bi-eye icon-faint"></i></span>
-                        <span>{views.toLocaleString()} views</span>
-                    </div>
+                    <AdminViews views={views} />
                     <div className="post-view-meta-item">
                         <span><i className="bi bi-chat icon-muted"></i> {commentCount} comment(s)</span>
                     </div>
