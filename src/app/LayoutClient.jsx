@@ -22,6 +22,13 @@ const ClientLayout = ({ children }) => {
     }
 
     useEffect ( () => {
+        //Add right-click and text selection restrictions across the site
+    const handleContextMenu = (e) => e.preventDefault()
+    const handleSelectStart = (e) => e.preventDefault()
+
+    document.addEventListener('contextmenu', handleContextMenu)
+    document.addEventListener('selectstart', handleSelectStart)
+
     //Back to the top function
     const handleScroll = () => {
         if(window.scrollY > 100) {
@@ -36,6 +43,8 @@ const ClientLayout = ({ children }) => {
 
     return () => {
         window.removeEventListener('scroll', handleScroll);
+        document.removeEventListener('contextmenu', handleContextMenu)
+        document.removeEventListener('selectstart', handleSelectStart)
     };
     },[]);
 

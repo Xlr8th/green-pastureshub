@@ -96,7 +96,7 @@ const Footer = ({ showToast }) => {
       <div className="footer-bottom">
         <div className="container footer-bottom-inner">
           <p className="footer-copy">
-            &copy; {currentYear} Green Pastures. All rights reserved.
+            &copy; {currentYear} Green Pastures. All content on this site is the property of Green Pastures and may not be copied, reproduced, or distributed without permission.
           </p>
           <p className="footer-credit">
             Designed by{' '}
