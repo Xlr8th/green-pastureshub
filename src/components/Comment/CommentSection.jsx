@@ -42,7 +42,7 @@ const buildTree = (flat, userId) => {
 const formatDate = (ts) => new Date(ts).toLocaleString('en-US', {dateStyle: 'medium', timeStyle: 'short'});
 
 
-const CommentThread = ({slug, comment, user, toggleLike, handleDelete, handleReply, replyingTo, setReplyingTo, depth = 0 }) => {
+const CommentThread = ({slug, comment, user, toggleLike, handleDelete, handleReply, replyingTo, setReplyingTo, depth = 0, likingIds }) => {
   const { isAdmin } = useAuth()
   const admin = isAdmin
   const [replyText, setReplyText] = useState('');
@@ -116,6 +116,7 @@ const CommentThread = ({slug, comment, user, toggleLike, handleDelete, handleRep
               type="button"
               className={`like-btn ${comment.liked ? "liked" : ""}`}
               onClick={() => toggleLike(comment.id)}
+              disabled={likingIds.has(comment.id)}
             >
               {comment.liked ? <AiFillLike /> : <AiOutlineLike />}
             </button>
@@ -205,6 +206,7 @@ const CommentThread = ({slug, comment, user, toggleLike, handleDelete, handleRep
                   depth={depth + 1}
                   replyingTo={replyingTo}
                   setReplyingTo={setReplyingTo}
+                  likingIds={likingIds}
                 />
               ))}
             </div>
@@ -224,6 +226,7 @@ const CommentSection = ({ postId, initialComments, slug }) => {
     const [newComment, setNewComment] = useState("");
     const [loading, setLoading] = useState(false);
     const [replyingTo, setReplyingTo] = useState(null);
+    const [likingIds, setLikingIds] = useState(new Set());
 
     useEffect(() => {
       setCommentTree(buildTree(initialComments, user?.id));
@@ -399,6 +402,10 @@ const CommentSection = ({ postId, initialComments, slug }) => {
         router.push(`/login?redirect=/post/${slug}`)
         return;
       }
+        // Prevent double-clicks while this comment is processing
+        if (likingIds.has(commentId)) return;
+
+        setLikingIds(prev => new Set(prev).add(commentId));
       try {
         const { data: existing, error } = await supabase
         .from('comment_likes')
@@ -410,22 +417,26 @@ const CommentSection = ({ postId, initialComments, slug }) => {
         if (error) throw error;
 
         if (existing) {
-          await supabase
+          const { error: deleteError } = await supabase
           .from('comment_likes')
           .delete()
           .eq('id', existing.id)
 
+          if(deleteError) throw deleteError;
+
           setCommentTree( prev => updateNodeInTree(prev, commentId, (n) => ({
             ...n,
             liked: false,
-            likes: n.likes - 1,
+            likes: Math.max(0, n.likes - 1),
           })));
 
         }
         else {
-          await supabase
+          const { error: insertError } = await supabase
           .from('comment_likes')
-          .insert({ comment_id: commentId, user_id: user.id})
+          .insert({ comment_id: commentId, user_id: user.id});
+
+          if (insertError) throw insertError;
 
           setCommentTree((prev) =>
           updateNodeInTree(prev, commentId, (n) => ({
@@ -438,6 +449,13 @@ const CommentSection = ({ postId, initialComments, slug }) => {
       }
       catch (error) {
         console.error('Error toggling like:', error.message)
+      }
+      finally {
+        setLikingIds(prev => {
+          const next = new Set(prev);
+          next.delete(commentId);
+          return next;
+        });
       }
       
     };
@@ -534,6 +552,7 @@ const CommentSection = ({ postId, initialComments, slug }) => {
                     replyingTo={replyingTo}
                     setReplyingTo={setReplyingTo}
                     depth={0}
+                    likingIds={likingIds}
                   />
                 ))}
               </div>
