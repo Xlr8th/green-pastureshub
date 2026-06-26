@@ -5,9 +5,7 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function POST (request) {
     try {
-        const record = await request.json();
-        console.log('Webhook body:', JSON.stringify(record));
-        
+        const record = await request.json();        
         if (!record) {
             return Response.json(
                 { error: 'Missing post record' },
@@ -36,8 +34,12 @@ export async function POST (request) {
   
                 <!-- Header -->
                 <div style="background-color: #2d6a4f; padding: 32px 40px; text-align: center;">
-                    <h1 style="color: #ffffff; font-size: 24px; margin: 0; letter-spacing: 1px;">Green Pastures</h1>
-                    <p style="color: #C9A84C; font-size: 13px; margin: 8px 0 0;">Nourishing Faith. Growing Lives.</p>
+                    <img 
+                        src="https://wlqnpxjmdxecnqasyhmy.supabase.co/storage/v1/object/public/post-images/Green%20Pasture%20White%20Logo.png" 
+                        alt="Green Pastures" 
+                        style="height: 60px; width: auto; display: block; margin: 0 auto 12px;"
+                    />
+                    <p style="color: #C9A84C; font-size: 13px; margin: 0;">Nourishing Faith. Growing Lives.</p>
                 </div>
 
                 <!-- Thumbnail -->
