@@ -59,7 +59,7 @@ const Hero = ({ searchTerm, onSearch, searchResults }) => {
 
       {/* Content */}
       <div className={`container hero-content ${loaded ? 'hero-loaded' : ''}`} >
-        <p className="hero-eyebrow" data-aos="fade-down">— A space for everyday believers —</p>
+        <p className="hero-eyebrow" data-aos="fade-down">— A space for the everyday believer —</p>
 
         <h1 className="hero-title" data-aos="zoom-in">Green Pastures</h1>
 
