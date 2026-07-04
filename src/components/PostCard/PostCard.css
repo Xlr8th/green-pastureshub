@@ -1,5 +1,5 @@
 .main {
-    padding: 2rem 0 4rem;
+    padding: 2rem 0 2rem;
 }
 
 .posts-grid {
@@ -17,6 +17,7 @@
     transition: transform 0.2s, box-shadow 0.2s;
     cursor: pointer;
     border: 1px solid var(--border);
+    height: 100%;
 }
 
 .post-card:hover {

@@ -68,13 +68,11 @@ const Home = ({ posts: initialPosts }) => {
     })(); 
 
     //helper function that builds the next URL from CURRENT url values + explicit overrides
-    const buildUrl = (overrides = {}, caller = '?') => {
+    const buildUrl = (overrides = {}) => {
         const category = overrides.category ?? currentSubCategory;
         const search = overrides.search ?? searchTerm;
         const sort = overrides.sort ?? currentSort;
         const page = overrides.page ?? 1;
-
-        console.log(`buildUrl [${caller}] →`, { category, search, sort, page, overrides })
 
         const params = new URLSearchParams();
 
@@ -111,14 +109,14 @@ const Home = ({ posts: initialPosts }) => {
 
     const handleSort = (value) => {
         router.replace(
-            buildUrl({sort: value}, 'handleSort'),
+            buildUrl({sort: value}),
             { scroll: false }
         );
     };
 
     const handleSubCategory = (subCategory) => {
         router.replace(
-            buildUrl({category: subCategory}, 'handleSubCategory'),
+            buildUrl({category: subCategory}),
             { scroll: false }
         );
 
@@ -126,7 +124,7 @@ const Home = ({ posts: initialPosts }) => {
     const handlePageChange = (page) => {
 
         router.replace(
-            buildUrl({ page }, 'handlePageChange'),
+            buildUrl({ page }),
             { scroll: false }
         );
 
