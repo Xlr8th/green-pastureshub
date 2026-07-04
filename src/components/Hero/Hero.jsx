@@ -28,7 +28,7 @@ const Hero = ({ searchTerm, onSearch, searchResults }) => {
     }, 4000);
 
     const handleClickOutside = (e) => {
-        if (searchRef.current && !searchRef.current.contains(e.target)) {
+        if (searchRef.current && !searchRef.current.contains(e.target) && searchTerm) {
             onSearch('')
         }
     }
@@ -38,7 +38,7 @@ const Hero = ({ searchTerm, onSearch, searchResults }) => {
       clearInterval(slideTimer);
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, []);
+  }, [searchTerm]);
 
   return (
     <section className="hero">
