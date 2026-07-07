@@ -304,3 +304,7 @@
 .search-auth-group {
     display: flex;
 }
+
+.create-post-btn {
+    white-space: nowrap;
+}

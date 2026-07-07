@@ -12,7 +12,7 @@ const Header = () => {
   const pathname = usePathname();
   const searchRef = useRef();
 
-  const { user } = useAuth();
+  const { user, isAdmin } = useAuth();
   const [isOpen, setIsOpen] = useState(false);  
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
@@ -102,6 +102,15 @@ const Header = () => {
               <li><Link href="/#about" onClick={closeMenu}>About</Link></li>
               <li><Link href="/#category" onClick={closeMenu}>Categories</Link></li>
               <li><Link href="/#subscribe" onClick={closeMenu}>Subscribe</Link></li>
+              {isAdmin && ( <div className="create-post-btn">
+                <li>
+                  <Link href="/admin/create" className="nav-create-link" onClick={closeMenu}>
+                    <i className="bi bi-plus-circle" /> Create Post
+                  </Link>
+                </li>
+              </div>
+                
+              )}
               <li>
                 {showHeaderSearch && (
                 <div className={`header-search ${
