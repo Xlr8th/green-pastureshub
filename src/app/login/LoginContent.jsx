@@ -3,12 +3,13 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { supabase } from "../../lib/supabase";
-import Toast from '../../components/Toast/Toast';
+import { useToast } from "../../lib/ToastContext";
 import './login.css'
 import { useSearchParams } from "next/navigation";
 
 export default function LoginContent() {
     const router = useRouter();
+    const { showToast } = useToast();
 
     const [displayName, setDisplayName] = useState('');
     const [email, setEmail] = useState("");
@@ -18,21 +19,8 @@ export default function LoginContent() {
     const [showPassword, setShowPassword] = useState(false);
     const [confirmPassword, setConfirmPassword] = useState('');
 
-    const [toastMessage, setToastMessage] = useState("");
-    const [isToastVisible, setIsToastVisible] = useState(false);
-
     const searchParams = useSearchParams();
     const redirect = searchParams.get('redirect');
-
-    const showToast = (message) => {
-        setToastMessage(message)
-        setIsToastVisible(true)
-
-        setTimeout(() => {
-            setToastMessage("")
-            setIsToastVisible(false)
-        }, 2500)
-    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -45,11 +33,11 @@ export default function LoginContent() {
                 const result = await supabase.auth.signInWithPassword({email, password});
 
                 if (result.error) {
-                    showToast(result.error.message)
+                    showToast(result.error.message, 'error')
                     return;
                 }
 
-                showToast("Successfully logged in.");
+                showToast("Successfully logged in.", 'success');
 
                 setTimeout(() => {
                     router.push(redirect || '/');
@@ -57,7 +45,7 @@ export default function LoginContent() {
             }
             else {
                 if (password !== confirmPassword) {
-                    showToast('Passwords do not match');
+                    showToast('Passwords do not match', 'error');
                     return;
 
                 };
@@ -69,12 +57,12 @@ export default function LoginContent() {
                 .maybeSingle();
 
                 if (checkError) {
-                    showToast("Unable to verify display name.");
+                    showToast("Unable to verify display name.", 'error');
                     return;
                 }
 
                 if (existingProfile) {
-                    showToast("Display name already taken. Please choose another one.");
+                    showToast("Display name already taken. Please choose another one.", 'error');
                     return;
                 }
 
@@ -90,19 +78,19 @@ export default function LoginContent() {
                 
 
                 if (result.error) {
-                    showToast(result.error.message);
+                    showToast(result.error.message, 'error');
                     return;
                 }
 
                 const user = result.data.user;
 
                 if (!user) {
-                    showToast('Unable to create account')
+                    showToast('Unable to create account','error')
                     return;
                 }
 
                 showToast(
-                    "Account created successfully. Check your email to confirm your account."
+                    "Account created successfully. Check your email to confirm your account.", 'success'
                 );
                 setTimeout(() => {
                     setIsLogin(true);
@@ -111,7 +99,7 @@ export default function LoginContent() {
        
         }
         catch (error) {
-            showToast(error.message || 'Something went wrong. Please try again.')
+            showToast(error.message || 'Something went wrong. Please try again.', 'error')
         }
         finally {
             setLoading(false)
@@ -127,10 +115,6 @@ export default function LoginContent() {
                 <p className="login-subtitle">
                     {isLogin ? 'sign in to continue.' : 'Create an account to get started.'}
                 </p>
-                <Toast 
-                    isVisible={isToastVisible}
-                    message={toastMessage}
-                />
                 <form onSubmit={handleSubmit}>
 
                     {!isLogin && (

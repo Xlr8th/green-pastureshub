@@ -25,7 +25,7 @@ const Subscribe = ({showToast}) => {
             if (!response.ok) {
                 showToast(data.error)
             } else {
-                showToast(data.message)
+                showToast(data.message, 'success')
                 setEmail('')
             }
         } 

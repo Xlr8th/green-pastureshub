@@ -8,10 +8,12 @@ const AuthContext = createContext(null)
 export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const [isAdmin, setIsAdmin] = useState(false);
+    const [authLoading, setAuthLoading] = useState(true)
 
     const fetchRole = async (userId) => {
         if (!userId) {
             setIsAdmin(false)
+            setAuthLoading(false)
             return
         }
         const { data } = await supabase
@@ -21,17 +23,10 @@ export const AuthProvider = ({ children }) => {
             .single()
 
         setIsAdmin(data?.role === 'admin')
+        setAuthLoading(false)
     }
 
     useEffect(() => {
-        const getCurrentSession = async () => {
-            const { data } = await supabase.auth.getSession();
-            const currentUser = data.session?.user ?? null
-            setUser(currentUser)
-            fetchRole(currentUser?.id)
-        };
-
-        getCurrentSession();
 
         const { data } = supabase.auth.onAuthStateChange((event, session) => {
             const currentUser = session?.user ?? null;
@@ -43,7 +38,7 @@ export const AuthProvider = ({ children }) => {
     
 
     return (
-        <AuthContext.Provider value={{ user, setUser, isAdmin }}>
+        <AuthContext.Provider value={{ user, setUser, isAdmin, authLoading }}>
             {children}
         </AuthContext.Provider>
     )

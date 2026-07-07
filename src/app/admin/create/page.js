@@ -2,6 +2,8 @@
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { supabase } from '../../../lib/supabase'
+import { useAuth } from '../../../lib/AuthContext'
+import { useToast } from '../../../lib/ToastContext'
 import './create.css'
 import dynamic from 'next/dynamic'
 
@@ -10,6 +12,9 @@ import 'react-quill-new/dist/quill.snow.css'
 
 export default function CreatePost() {
     const router = useRouter();
+    const { authLoading, isAdmin, user } = useAuth();
+    const { showToast } = useToast()
+    
 
     const [formData, setFormData] = useState({
         title: '',
@@ -98,6 +103,11 @@ export default function CreatePost() {
 
         event.preventDefault()
 
+        if (!isAdmin) {
+            showToast('You are not authorized to perform this action.', 'error')
+            return
+        }
+
         const { valid, errors } = validateForm()
 
         if (!valid) {
@@ -135,7 +145,12 @@ export default function CreatePost() {
                 .insert(post)
 
             if (error) {
-                setErrors([error.message])
+                // Postgres RLS violations surface as error code 4250 ("insufficient_privilege"). 
+                if (error.code === '42501') {
+                    setErrors(['You are not authorized to perform this action.'])
+                } else {
+                    setErrors([error.message])
+                }
                 setLoading(false)
                 return
             }
@@ -156,14 +171,36 @@ export default function CreatePost() {
     }
 
     useEffect(() => {
-        const checkAuth = async () => {
-            const { data: { session } } = await supabase.auth.getSession()
-            if (!session) {
-                router.push('/admin')
+        const handlePageShow = (event) => {
+            if (event.persisted) {
+                window.location.reload()
             }
         }
-        checkAuth()
+        window.addEventListener('pageshow', handlePageShow)
+        return () => window.removeEventListener('pageshow', handlePageShow)
     }, [])
+
+
+    // Guard: once auth state has settled, bounce anyone who isn't a logged-in admin. AuthContext already tracks `user` and `isAdmin`
+    useEffect(() => {
+        if (authLoading) return
+
+        if (!user) {
+            router.replace('/login')
+            return
+        }
+
+        if (!isAdmin) {
+            showToast('You are not authorized to access that page.', 'error')
+            router.replace('/')
+        }
+            
+    }, [user, isAdmin, authLoading])
+
+    // --- Instant gating: never render the form until we KNOW the user is an admin.
+    if (authLoading) return null;
+
+    if (!isAdmin) return null;
 
     return (
         <section className="create-post-section">

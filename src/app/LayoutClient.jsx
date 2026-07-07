@@ -5,21 +5,11 @@ import BackToTop from "../components/BackToTop/BackToTop";
 import Toast from "../components/Toast/Toast";
 import Footer from "../components/Footer/Footer";
 import { AuthProvider } from "../lib/AuthContext";
+import { ToastProvider, useToast } from "../lib/ToastContext";
 
-const ClientLayout = ({ children }) => {
+const LayoutContent = ({ children }) => {
     const [backToTop, setBackToTop] = useState(false);
-    const [isToastVisible, setIsToastVisible] = useState(false);
-    const [toastMessage, setToastMessage] = useState(null);
-
-    const showToast = (message) => {
-        setToastMessage(message);
-        setIsToastVisible(true);
-
-        setTimeout(()=>{
-            setToastMessage(null)
-            setIsToastVisible(false)
-        }, 2500);
-    }
+    const { showToast } = useToast();
 
     useEffect ( () => {
         //Add right-click and text selection restrictions across the site
@@ -50,26 +40,21 @@ const ClientLayout = ({ children }) => {
 
     return (
         <>
-        <AuthProvider>
-          <Header />
-
-            <Toast 
-                isVisible={isToastVisible}
-                message={toastMessage}
-            />
-            
-            <BackToTop
-                backToTop={backToTop} 
-            />
-
-            {children}  {/* ← each page renders here */}
-
-            <Footer 
-                showToast={showToast}
-            />  
-        </AuthProvider>
-            
+            <Header />
+            <BackToTop backToTop={backToTop} />
+            {children}
+            <Footer showToast={showToast} />
         </>
+    )
+}
+
+const ClientLayout = ({ children }) => {
+    return (
+        <AuthProvider>
+            <ToastProvider>
+                <LayoutContent>{children}</LayoutContent>
+            </ToastProvider>
+        </AuthProvider>
     )
 }
 
