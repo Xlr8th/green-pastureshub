@@ -1,13 +1,15 @@
-
+import './Preloader.css'
 
 const Preloader = () => {
   return (
     <div>
       <div id='preloader'>
-        <div></div>
-        <div></div>
-        <div></div>
-        <div></div>
+        <div className="loader">
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+        </div>
       </div>
     </div>
   )

@@ -8,7 +8,7 @@ import { useSearchParams, useRouter } from 'next/navigation';
 
 
 const Home = ({ posts: initialPosts }) => {
-    const POSTS_PER_PAGE = 9;
+    const POSTS_PER_PAGE = 6;
     const searchParams = useSearchParams();
     const router = useRouter();
 
@@ -174,7 +174,7 @@ const Home = ({ posts: initialPosts }) => {
                         aria-label="Previous page"
                     >
                         <i className="bi bi-chevron-left"></i>
-                        <span>Previous</span>
+                        <span>Prev</span>
                     </button>
 
                     <span className="page-info">

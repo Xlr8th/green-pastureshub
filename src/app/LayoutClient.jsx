@@ -2,7 +2,6 @@
 import { useState, useEffect } from "react";
 import Header from "../components/Header/Header";
 import BackToTop from "../components/BackToTop/BackToTop";
-import Toast from "../components/Toast/Toast";
 import Footer from "../components/Footer/Footer";
 import { AuthProvider } from "../lib/AuthContext";
 import { ToastProvider, useToast } from "../lib/ToastContext";

@@ -336,6 +336,12 @@ export default function CreatePost() {
                                     <option value="lifestyle">
                                         Lifestyle
                                     </option>
+                                    <option value="covenant thought">
+                                        covenant Thoughts
+                                    </option>
+                                    <option value="chitchat">
+                                        Chitchat
+                                    </option>
                                 </select>
                             </div>
                         </div>
