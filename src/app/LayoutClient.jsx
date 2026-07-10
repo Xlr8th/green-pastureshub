@@ -12,8 +12,22 @@ const LayoutContent = ({ children }) => {
 
     useEffect ( () => {
         //Add right-click and text selection restrictions across the site
-    const handleContextMenu = (e) => e.preventDefault()
-    const handleSelectStart = (e) => e.preventDefault()
+    const handleContextMenu = (e) => {
+        const tag = e.target.tagName.toLowerCase()
+        const isEditable = e.target.isContentEditable
+        
+        if (tag === 'input' || tag === 'textarea' || isEditable) return
+        
+        e.preventDefault()
+    }
+    const handleSelectStart = (e) => {
+        const tag = e.target.tagName.toLowerCase()
+        const isEditable = e.target.isContentEditable
+        
+        if (tag === 'input' || tag === 'textarea' || isEditable) return
+        
+        e.preventDefault()
+    }
 
     document.addEventListener('contextmenu', handleContextMenu)
     document.addEventListener('selectstart', handleSelectStart)
