@@ -30,6 +30,7 @@ export default function CreatePost() {
 
     const [errors, setErrors] = useState([]);
     const [loading, setLoading] = useState(false);
+    const [thumbnailValid, setThumbnailValid] = useState(false);
 
     const generateSlug = (title) => {
         return title
@@ -99,6 +100,12 @@ export default function CreatePost() {
         }))
     }
 
+    const sanitizeContent = (html) => {
+        return html
+            .replace(/&nbsp;/g, ' ')   // catches the literal text "&nbsp;" if it appears
+            .replace(/\u00A0/g, ' ')   // catches the actual non-breaking space character
+    }
+
     const handleSubmit = async (event) => {
 
         event.preventDefault()
@@ -130,7 +137,7 @@ export default function CreatePost() {
             excerpt: formData.excerpt,
             tags: tagsArray,
             thumbnail: formData.thumbnail,
-            content: formData.content,
+            content: sanitizeContent(formData.content),
             readTime: Number(formData.readTime),
             subCategory: formData.subCategory,
             featured: formData.featured,
@@ -277,6 +284,21 @@ export default function CreatePost() {
                                 value={formData.thumbnail}
                                 onChange={handleChange}
                             />
+
+                            {formData.thumbnail.trim() && (
+                            <div className="image-preview-container">
+                                <img
+                                    src={formData.thumbnail}
+                                    alt="Thumbnail preview"
+                                    className={thumbnailValid ? 'visible' : 'hidden'}
+                                    onLoad={() => setThumbnailValid(true)}
+                                    onError={() => setThumbnailValid(false)}
+                                />
+                                {!thumbnailValid && (
+                                    <p className="thumbnail-error">Unable to load image from this URL</p>
+                                )}
+                            </div>
+                        )}
                         </div>
                     </div>
 
