@@ -352,8 +352,8 @@ export default function CreatePost() {
                                     <option value="parenting">
                                         Parenting
                                     </option>
-                                    <option value="marriage">
-                                        Marriage
+                                    <option value="relationships">
+                                        Relationships
                                     </option>
                                     <option value="lifestyle">
                                         Lifestyle
