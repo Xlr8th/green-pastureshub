@@ -80,9 +80,8 @@ const CommentThread = ({slug, comment, user, toggleLike, handleDelete, handleRep
 
   return (
     <div className={`comment-thread ${depth > 0 ? "comment-thread-reply" : ""}`}>
-
+      
       <div className="comment-box">
-
         <div className="avatar-wrapper">
           <img
             src={`https://ui-avatars.com/api/?name=${encodeURIComponent(
@@ -95,10 +94,13 @@ const CommentThread = ({slug, comment, user, toggleLike, handleDelete, handleRep
         <div className="comment-content">
           <div className="comment-header">
             <h4>
-              {comment.profiles?.display_name || "Anonymous"}
+              <Link href={`/profile/${encodeURIComponent(comment.profiles?.display_name)}`} style={{textDecoration: 'none', color: '#0f172a'}}>
+                {comment.profiles?.display_name || "Anonymous"}
+              </Link>
               {comment.profiles?.role === 'admin' && (
                 <span className="admin-badge">Admin</span>
               )}
+              
             </h4>
             <span className="time">
               {formatDate(comment.created_at)}

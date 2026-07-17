@@ -1,0 +1,607 @@
+/* Dashboard Container & Layout */
+.dashboard {
+  min-height: 100vh;
+  background-color: #f8fafc; /* slate-50 */
+  color: #334155; /* slate-700 */
+  padding-bottom: 4rem;
+  font-family: system-ui, -apple-system, sans-serif;
+}
+
+/* Header Hero Area */
+.headerHero {
+  background-color: #ffffff;
+  border-bottom: 1px solid #e2e8f0;
+  padding: 2.5rem 0;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+}
+
+.headerContainer {
+  max-width: 64rem;
+  margin: 0 auto;
+  padding: 0 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .headerContainer {
+    flex-direction: row;
+    align-items: center;
+    text-align: left;
+  }
+}
+
+/* Avatar Badge */
+.avatar {
+  width: 6rem;
+  height: 6rem;
+  border-radius: 50%;
+  background-color: #ecfdf5; /* emerald-50 */
+  border: 2px solid #a7f3d0; /* emerald-200 */
+  color: #047857; /* emerald-700 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.875rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+/* Profile Text Details */
+.profileDetails {
+  flex: 1;
+  text-align: center;
+}
+
+@media (min-width: 768px) {
+  .profileDetails {
+    text-align: left;
+  }
+}
+
+.nameRow {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+@media (min-width: 768px) {
+  .nameRow {
+    flex-direction: row;
+  }
+}
+
+.displayName {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #0f172a; /* slate-900 */
+  margin: 0;
+}
+
+.adminBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  background-color: #fffbeb; /* amber-50 */
+  color: #b45309; /* amber-700 */
+  border: 1px solid #fde68a; /* amber-200 */
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.125rem 0.625rem;
+  border-radius: 9999px;
+}
+
+.joinDate {
+  color: #64748b; /* slate-500 */
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+}
+
+@media (min-width: 768px) {
+  .joinDate {
+    justify-content: flex-start;
+  }
+}
+
+/* 2-Column Main Content Grid */
+.mainGrid {
+  max-width: 64rem;
+  margin: 2rem auto 0 auto;
+  padding: 0 1rem;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+}
+/* Fallback/Modifier layout when viewing someone else's profile */
+
+.mainGrid.no-sidebar {
+  grid-template-columns: 1fr;
+}
+
+.contentArea {
+  width: 100%;
+  transition: all 0.2s ease-in-out;
+}
+
+@media (min-width: 768px) {
+  .mainGrid {
+    grid-template-columns: 1fr 3fr;
+  }
+}
+
+/* Sidebar Navigation */
+.sidebar {
+  background-color: #ffffff;
+  padding: 1rem;
+  border-radius: 0.75rem;
+  border: 1px solid #e2e8f0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+.sidebar.no-sidebar {
+  display: none;
+}
+
+.sidebarTitle {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: #94a3b8; /* slate-400 */
+  padding: 0 0.75rem;
+  margin-bottom: 0.5rem;
+}
+
+.navButton {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  border: none;
+  background: transparent;
+  color: #475569; /* slate-600 */
+  cursor: pointer;
+  text-align: left;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.navButton:hover {
+  background-color: #f1f5f9;
+}
+
+.navButtonActive {
+  background-color: #ecfdf5; /* emerald-50 */
+  color: #047857; /* emerald-700 */
+}
+
+/* Main Content Wrapper */
+.contentArea {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* Summary KPI Cards */
+.statsRow {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+@media (min-width: 640px) {
+  .statsRow {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .adminStatsRow {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.card {
+  background-color: #ffffff;
+  padding: 1.25rem;
+  border-radius: 0.75rem;
+  border: 1px solid #e2e8f0;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+}
+
+.iconWrapperEmerald {
+  padding: 0.75rem;
+  background-color: #ecfdf5;
+  color: #059669;
+  border-radius: 0.5rem;
+}
+
+.iconWrapperAmber {
+  padding: 0.75rem;
+  background-color: #fffbeb;
+  color: #d97706;
+  border-radius: 0.5rem;
+}
+
+.cardLabel {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: #94a3b8;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.cardValue {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0;
+}
+
+/* Specific Category Spread List */
+.categoryCard {
+  background-color: #ffffff;
+  padding: 1.25rem;
+  border-radius: 0.75rem;
+  border: 1px solid #e2e8f0;
+}
+
+.categoryTitle {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: #94a3b8;
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+}
+
+.categoryLine {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.75rem;
+  color: #475569;
+}
+
+.categoryName {
+  text-transform: capitalize;
+}
+
+.categoryCount {
+  font-weight: 600;
+}
+
+/* Styled Table for Admin Dashboard */
+.tableCard {
+  background-color: #ffffff;
+  border-radius: 0.75rem;
+  border: 1px solid #e2e8f0;
+  overflow: hidden;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+}
+
+.tableHeader {
+  padding: 1.25rem;
+  border-b: 1px solid #f1f5f9;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.tableTitle {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0;
+}
+
+.tableBadge {
+  background-color: #d1fae5;
+  color: #065f46;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.125rem 0.625rem;
+  border-radius: 9999px;
+}
+
+.tableResponsive {
+  overflow-x: auto;
+}
+
+.customTable {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.tableHeadRow th {
+  padding: 0.75rem 1.25rem;
+  background-color: #f8fafc;
+  color: #94a3b8;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.tableBodyRow td {
+  padding: 0.875rem 1.25rem;
+  font-size: 0.875rem;
+  color: #475569;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.activeDot {
+  display: inline-block;
+  width: 0.5rem;
+  height: 0.5rem;
+  background-color: #10b981;
+  border-radius: 50%;
+  margin-right: 0.5rem;
+}
+
+/* Comments Timeline List */
+.timelineCard {
+  background-color: #ffffff;
+  padding: 1.5rem;
+  border-radius: 0.75rem;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+}
+
+.timelineTitle {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0 0 1rem 0;
+}
+
+.timeline {
+  position: relative;
+  border-left: 2px solid #f1f5f9;
+  padding-left: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.timelineItem {
+  position: relative;
+}
+
+.timelineIndicator {
+  position: absolute;
+  left: -21px;
+  top: 4px;
+  background-color: #ffffff;
+  border: 2px solid #10b981;
+  width: 0.75rem;
+  height: 0.75rem;
+  border-radius: 50%;
+}
+
+.timelineMeta {
+  font-size: 0.75rem;
+  color: #94a3b8;
+  margin: 0 0 0.25rem 0;
+}
+
+.postLink {
+  color: #059669;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.postLink:hover {
+  text-decoration: underline;
+}
+
+.commentBubble {
+  font-size: 0.875rem;
+  background-color: #f8fafc;
+  padding: 0.875rem;
+  border-radius: 0.5rem;
+  border: 1px solid #f1f5f9;
+  color: #334155;
+  font-style: italic;
+  margin: 0;
+}
+
+/* Settings Form elements */
+.settingsCard {
+  background-color: #ffffff;
+  padding: 1.5rem;
+  border-radius: 0.75rem;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+}
+
+.settingsTitle {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #0f172a;
+  border-bottom: 1px solid #f1f5f9;
+  padding-bottom: 0.75rem;
+  margin: 0 0 1.5rem 0;
+}
+
+.settingsForm {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  max-width: 28rem;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+}
+
+.formLabel {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #64748b;
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+}
+
+.inputWrapper {
+  position: relative;
+}
+
+.formInput {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0.5rem 0.75rem 0.5rem 2.25rem;
+  background-color: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+}
+
+.formInput:focus {
+  outline: 2px solid #059669;
+}
+
+.inputIcon {
+  position: absolute;
+  left: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #94a3b8;
+  width: 1rem;
+  height: 1rem;
+}
+
+.submitBtnEmerald {
+  background-color: #059669;
+  color: #ffffff;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  border: none;
+  cursor: pointer;
+  align-self: flex-start;
+  transition: background-color 0.2s;
+}
+
+.submitBtnEmerald:hover {
+  background-color: #047857;
+}
+
+.submitBtnSlate {
+  background-color: #1e293b;
+  color: #ffffff;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  border: none;
+  cursor: pointer;
+  align-self: flex-start;
+  transition: background-color 0.2s;
+}
+
+.submitBtnSlate:hover {
+  background-color: #0f172a;
+}
+
+.divider {
+  border: 0;
+  border-top: 1px solid #f1f5f9;
+  margin: 1.5rem 0;
+}
+
+.emptyText {
+  color: #94a3b8;
+  font-size: 0.875rem;
+  text-align: center;
+  padding: 1rem 0;
+}
+
+/* Container holding chart and legend side-by-side */
+.chartFlexContainer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 2.5rem;
+  margin-top: 1rem;
+  width: 100%;
+}
+
+/* Pure CSS Hollow Pie (Donut) Chart */
+.donutChart {
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  position: relative;
+  flex-shrink: 0;
+  box-shadow: inset 0 0 10px rgba(0,0,0,0.05);
+}
+
+/* The "Hollow" inner circle mask */
+.donutChart::before {
+  content: "";
+  position: absolute;
+  top: 22%;
+  left: 22%;
+  width: 56%;
+  height: 56%;
+  background-color: #ffffff; /* Matches card background to make it hollow */
+  border-radius: 50%;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+/* Legend Area on the right side */
+.chartLegend {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  flex-grow: 1;
+}
+
+/* Row wrapper for label and count figure alignment */
+.legendItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  font-size: 0.95rem;
+}
+
+/* Left side alignment structure: indicator + text */
+.legendLabelGroup {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+/* Color block indicator */
+.colorIndicator {
+  width: 12px;
+  height: 12px;
+  border-radius: 3px;
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+/* Clean styling for names and numbers */
+.categoryName {
+  font-weight: 500;
+  color: #334155;
+}
+
+.categoryCount {
+  font-weight: 600;
+  color: #0f172a;
+}

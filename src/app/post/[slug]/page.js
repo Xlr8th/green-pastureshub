@@ -10,13 +10,16 @@ export async function generateMetadata({ params }) {
 
     const { data: post } = await supabase
     .from('posts')
-    .select('title, excerpt')
+    .select('title, excerpt, thumbnail')
     .eq('slug', slug)
     .single()
 
     return {
         title: post?.title,
-        description: post?.excerpt
+        description: post?.excerpt,
+        openGraph: {
+            images: post?.thumbnail ? [post.thumbnail] : [],
+        }
     }
 }
 

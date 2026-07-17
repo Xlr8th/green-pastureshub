@@ -12,7 +12,7 @@ const Header = () => {
   const pathname = usePathname();
   const searchRef = useRef();
 
-  const { user, isAdmin } = useAuth();
+  const { user, isAdmin, displayName } = useAuth();
   const [isOpen, setIsOpen] = useState(false);  
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
@@ -101,7 +101,7 @@ const Header = () => {
               <li><Link href="/" onClick={closeMenu}>Home</Link></li>
               <li><Link href="/#about" onClick={closeMenu}>About</Link></li>
               <li><Link href="/#category" onClick={closeMenu}>Categories</Link></li>
-              <li><Link href="/#subscribe" onClick={closeMenu}>Subscribe</Link></li>
+              {user && (<li><Link href={`/profile/${encodeURIComponent(displayName)}`} className="nav-create-link" onClick={closeMenu}>Profile</Link></li>)}              
               {isAdmin && ( <div className="create-post-btn">
                 <li>
                   <Link href="/admin/create" className="nav-create-link" onClick={closeMenu}>

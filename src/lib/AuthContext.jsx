@@ -8,7 +8,8 @@ const AuthContext = createContext(null)
 export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const [isAdmin, setIsAdmin] = useState(false);
-    const [authLoading, setAuthLoading] = useState(true)
+    const [authLoading, setAuthLoading] = useState(true);
+    const [displayName, setDisplayName] = useState('')
 
     const fetchRole = async (userId) => {
         if (!userId) {
@@ -18,12 +19,13 @@ export const AuthProvider = ({ children }) => {
         }
         const { data } = await supabase
             .from('profiles')
-            .select('role')
+            .select('role, display_name')
             .eq('id', userId)
             .single()
 
-        setIsAdmin(data?.role === 'admin')
-        setAuthLoading(false)
+        setIsAdmin(data?.role === 'admin');
+        setDisplayName(data?.display_name);
+        setAuthLoading(false);
     }
 
     useEffect(() => {
@@ -38,7 +40,7 @@ export const AuthProvider = ({ children }) => {
     
 
     return (
-        <AuthContext.Provider value={{ user, setUser, isAdmin, authLoading }}>
+        <AuthContext.Provider value={{ user, setUser, isAdmin, authLoading, displayName }}>
             {children}
         </AuthContext.Provider>
     )
