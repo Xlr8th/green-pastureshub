@@ -114,7 +114,7 @@ export default function DashboardUI({
           <div className="profileDetails">
             <div className="nameRow">
               <h1 className="displayName">{profile.display_name}</h1>
-              {isAdmin && (
+              {isAdmin && isOwner && (
                 <span className="adminBadge">
                   <Shield size={12} /> Admin
                 </span>
@@ -242,13 +242,7 @@ export default function DashboardUI({
                         <p className="cardValue">{totalPosts}</p>
                     </div>
                 </div>
-
-                {isOwner && (
-                    <>
-                       
-                     
-                    </>
-                )}                
+               
               </div>
               <div>
                 <div className="categoryCard">
